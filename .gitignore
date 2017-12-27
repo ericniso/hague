@@ -1,0 +1,8 @@
+# Ignore executables
+hague
+
+# Ignore build files
+*.o
+
+# Ignore gengetopt generated files
+cmdline.*
