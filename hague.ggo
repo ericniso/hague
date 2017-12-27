@@ -1,0 +1,11 @@
+package "hague"
+version "0.1.0"
+description "Implementation of the Karp-Rabin algorithm"
+args "--unamed-opts"
+
+# Options
+option  "filename" f "FASTA file" string typestr="filename"
+option  "k-mer-length" k "k-mer length" int  typestr="k-mer"
+details="\n
+The text file is in FASTA format.\n
+---------------------------\n"
