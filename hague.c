@@ -2,6 +2,9 @@
 
 int main(int argc, char** argv)
 {
+    ggo_args ai;
+    assert(cmdline_parser(argc, argv, &ai) == 0);
+
     return 0;
 }
 
