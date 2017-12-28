@@ -1,8 +1,8 @@
 # Ignore executables
-hague
+bin
 
 # Ignore build files
-*.o
+build
 
 # Ignore gengetopt generated files
-cmdline.*
+src/cmdline
