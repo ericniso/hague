@@ -57,4 +57,4 @@ ggo: conf/$(P).ggo
 clean:
 	rm -rf bin build src/cmdline/*
 
-.PHONY: clean ggo
+.PHONY: bin clean ggo
