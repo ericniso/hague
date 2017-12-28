@@ -1,10 +1,12 @@
 #ifndef HAGUE_H
 #define HAGUE_H
 
+#include <stdlib.h>
 #include <assert.h>
 #include <zlib.h>
 #include "../../libs/klib/kseq.h"
 #include "../cmdline/cmdline.h"
+#include "../graph/hgraph.h"
 
 KSEQ_INIT(gzFile, gzread)
 
