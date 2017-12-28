@@ -43,6 +43,10 @@ $(IO_OBJDIR)/%.o: src/io/%.c src/io/%.h
 	mkdir -p $(IO_OBJDIR)
 	$(CC) -o $@ $(CFLAGS) -I src/graph/ -I src/cmdline $(INCS) -c $<
 
+$(MAP_OBJDIR)/%.o: src/map/%.c src/map/%.h
+	mkdir -p $(MAP_OBJDIR)
+	$(CC) -o $@ $(CFLAGS) -I src/map/ $(INCS) -c $<
+
 $(GRAPH_OBJDIR)/%.o: src/graph/%.c src/graph/%.h
 	mkdir -p $(GRAPH_OBJDIR)
 	$(CC) -o $@ $(CFLAGS) -I src/graph/ $(INCS) -c $<
