@@ -12,8 +12,7 @@ hgraph_create()
     hgraph* g = malloc(sizeof(hgraph));
     g->v = 0;
     g->e = 0;
-    g->vertices = malloc(sizeof(hgraph_vertex_map));
-    map_init(g->vertices);
+    g->vertices = malloc(g->v * sizeof(hgraph_vertex*));
 
     return g;
 }

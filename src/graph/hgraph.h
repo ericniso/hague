@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include "../map/map.h"
 
 typedef struct hgraph hgraph;
 
@@ -12,13 +11,11 @@ typedef struct hgraph_vertex hgraph_vertex;
 
 typedef struct hgraph_edge hgraph_edge;
 
-typedef map_t(hgraph_vertex*) hgraph_vertex_map;
-
 struct hgraph
 {
     int v; /* Number of vertices */
     int e; /* Number of edges */
-    hgraph_vertex_map* vertices; /* Map of vertices */
+    hgraph_vertex** vertices; /* Map of vertices */
 };
 
 struct hgraph_vertex
