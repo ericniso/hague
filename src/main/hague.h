@@ -3,8 +3,8 @@
 
 #include <assert.h>
 #include <zlib.h>
-#include "klib/kseq.h"
-#include "cmdline.h"
+#include "../../libs/klib/kseq.h"
+#include "../cmdline/cmdline.h"
 
 KSEQ_INIT(gzFile, gzread)
 
