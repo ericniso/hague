@@ -22,7 +22,8 @@ struct hgraph
 struct hgraph_vertex
 {
     char* key; /* Node identifier */
-    int nc; /* Neighbours count */
+    int indegree; /* Indegree */
+    int outdegree; /* Outdegree */ 
     struct hgraph_edge** neighbours; /* Connected edges */
 };
 
