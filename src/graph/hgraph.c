@@ -33,3 +33,68 @@ hgraph_edge_count(hgraph* g)
     return g->e;
 }
 
+hgraph_vertex*
+hgraph_get_vertex(hgraph* g, char* key)
+{
+    assert_graph_init(g);
+
+    int i = 0;
+    bool found = false;
+    hgraph_vertex* v = NULL;
+
+    while(!found && i < g->v)
+    {
+        hgraph_vertex* curr = g->vertices[i];
+        if (strcmp(curr->key, key) == 0)
+        {
+            v = curr;
+            found = true;
+        }
+
+        i++;
+    }
+
+    return v;
+}
+
+void
+hgraph_add_vertex(hgraph* g, char* key)
+{
+    assert_graph_init(g);
+
+    hgraph_vertex* v = hgraph_get_vertex(g, key);
+    if (v == NULL)
+    {
+        v = malloc(sizeof(hgraph_vertex));
+        v->nc = 0;
+        v->key = malloc(sizeof(char));
+        strcpy(v->key, key);
+        v->neighbours = malloc(0 * sizeof(hgraph_edge*));
+
+        g->v++;
+        g->vertices = realloc(g->vertices, g->v * sizeof(hgraph_vertex*));
+        g->vertices[g->v - 1] = v;
+    }    
+}
+
+void
+hgraph_add_edge(hgraph* g, char* start, char* end)
+{
+    assert_graph_init(g);
+
+    hgraph_add_vertex(g, start);
+    hgraph_add_vertex(g, end);
+
+    hgraph_vertex* v = hgraph_get_vertex(g, start);
+    v->nc++;
+    v->neighbours = realloc(v->neighbours, sizeof(v->nc * sizeof(hgraph_edge*)));
+
+    hgraph_edge* e = malloc(sizeof(hgraph_edge));
+    e->visited = false;
+    e->end = malloc(sizeof(char));
+    strcpy(e->end, end);
+
+    v->neighbours[v->nc - 1] = e;
+
+    g->e++;
+}

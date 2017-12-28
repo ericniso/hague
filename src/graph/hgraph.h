@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <string.h>
 
 typedef struct hgraph hgraph;
 
@@ -39,5 +40,14 @@ hgraph_vertex_count(hgraph*);
 
 int
 hgraph_edge_count(hgraph*);
+
+hgraph_vertex*
+hgraph_get_vertex(hgraph*, char*);
+
+void
+hgraph_add_vertex(hgraph*, char*);
+
+void
+hgraph_add_edge(hgraph*, char*, char*);
 
 #endif
