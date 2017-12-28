@@ -28,13 +28,14 @@ GRAPH_OBJS = $(addprefix $(GRAPH_OBJDIR)/, $(GRAPH_FILES:.c=.o))
 
 # Cmdline
 CMDLINE_OBJDIR = build/cmdline
+CMDLINE_GEN_SRCS = src/cmdline/cmdline.c src/cmdline/cmdline.h
 CMDLINE_OBJS = $(CMDLINE_OBJDIR)/cmdline.o
 
-OBJS = $(CMDLINE_OBJS) $(GRAPH_OBJS) $(HAGUE_OBJS)
+OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(HAGUE_OBJS)
 
 bin: bin/hague
 
-bin/hague: ggo $(OBJS)
+bin/hague: $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) -I src/main/ -I src/graph/ -I src/cmdline/ $(INCS) $(OBJS) $(LINK)
 
@@ -50,11 +51,11 @@ $(CMDLINE_OBJDIR)/%.o: src/cmdline/%.c src/cmdline/%.h
 	mkdir -p $(CMDLINE_OBJDIR)
 	$(CC) -o $@ $(CFLAGS) -I src/cmdline/ $(INCS) -c $<
 
-ggo: conf/$(P).ggo
+$(CMDLINE_GEN_SRCS): conf/$(P).ggo
 	mkdir -p src/cmdline
 	gengetopt -i $< --output-dir=src/cmdline/
 
 clean:
-	rm -rf bin build src/cmdline/*
+	rm -rf bin build src/cmdline
 
-.PHONY: bin clean ggo
+.PHONY: bin clean
