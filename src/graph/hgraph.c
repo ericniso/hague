@@ -103,3 +103,23 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
 
     g->e++;
 }
+
+bool
+hgraph_has_edge(hgraph* g, char* start, char* end)
+{
+    assert_graph_init(g);
+
+    hgraph_vertex* v = hgraph_get_vertex(g, start);
+
+    int i = 0;
+    bool found = false;
+
+    while(!found && i < v->outdegree)
+    {
+        hgraph_edge* e = v->neighbours[i];
+        found = (strcmp(e->end, end) == 0);
+        i++;
+    }
+
+    return found;
+}
