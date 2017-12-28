@@ -1,6 +1,7 @@
 #ifndef HAGUE_GRAPH_H
 #define HAGUE_GRAPH_H
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 #include "../map/map.h"
@@ -32,5 +33,14 @@ struct hgraph_edge
     bool visited; /* Needed for Eulerian walk algorithm */
     char* end; /* Ending node key */
 };
+
+hgraph*
+hgraph_create();
+
+int
+hgraph_vertex_count(hgraph*);
+
+int
+hgraph_edge_count(hgraph*);
 
 #endif
