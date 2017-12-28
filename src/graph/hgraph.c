@@ -66,7 +66,8 @@ hgraph_add_vertex(hgraph* g, char* key)
     if (v == NULL)
     {
         v = malloc(sizeof(hgraph_vertex));
-        v->nc = 0;
+        v->indegree = 0;
+        v->outdegree = 0;
         v->key = malloc(sizeof(char));
         strcpy(v->key, key);
         v->neighbours = malloc(0 * sizeof(hgraph_edge*));
@@ -85,16 +86,20 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     hgraph_add_vertex(g, start);
     hgraph_add_vertex(g, end);
 
-    hgraph_vertex* v = hgraph_get_vertex(g, start);
-    v->nc++;
-    v->neighbours = realloc(v->neighbours, sizeof(v->nc * sizeof(hgraph_edge*)));
+    hgraph_vertex* v_e = hgraph_get_vertex(g, end);
+    v_e->indegree++;
+
+    hgraph_vertex* v_s = hgraph_get_vertex(g, start);
+    v_s->outdegree++;
+
+    v_s->neighbours = realloc(v_s->neighbours, sizeof(v_s->outdegree * sizeof(hgraph_edge*)));
 
     hgraph_edge* e = malloc(sizeof(hgraph_edge));
     e->visited = false;
     e->end = malloc(sizeof(char));
     strcpy(e->end, end);
 
-    v->neighbours[v->nc - 1] = e;
+    v_s->neighbours[v_s->outdegree - 1] = e;
 
     g->e++;
 }
