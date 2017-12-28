@@ -1,3 +1,3 @@
 [submodule "klib"]
-	path = klib
+	path = libs/klib
 	url = git@github.com:attractivechaos/klib.git
