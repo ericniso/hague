@@ -23,6 +23,17 @@ main(int argc, char** argv)
     ggo_args ai;
     assert(cmdline_parser(argc, argv, &ai) == 0);
 
+    gzFile fp;
+    kseq_t* seq = read_fasta(ai.filename_arg, fp);
+
+    hgraph* g = create_de_bruijn_graph(seq, ai.k_mer_length_arg);
+    printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
+
+    hgraph_destroy(g);
+    kseq_destroy(seq);
+    gzclose(fp);
+    cmdline_parser_free (&ai);
+
     return 0;
 }
 
