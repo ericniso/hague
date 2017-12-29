@@ -12,13 +12,6 @@ CFLAGS = -m64 -std=c11 -Wall -Wextra
 
 # Sources
 
-# Hague
-HAGUE_OBJDIR = build/hague
-HAGUE_SRCS = $(wildcard src/main/*.c)
-HAGUE_HDRS = $(wildcard src/main/*.h)
-HAGUE_FILES = $(notdir $(HAGUE_SRCS))
-HAGUE_OBJS = $(addprefix $(HAGUE_OBJDIR)/, $(HAGUE_FILES:.c=.o))
-
 # Graph
 GRAPH_OBJDIR = build/graph
 GRAPH_SRCS = $(wildcard src/graph/*.c)
@@ -26,22 +19,29 @@ GRAPH_HDRS = $(wildcard src/graph/*.h)
 GRAPH_FILES = $(notdir $(GRAPH_SRCS))
 GRAPH_OBJS = $(addprefix $(GRAPH_OBJDIR)/, $(GRAPH_FILES:.c=.o))
 
+# IO
+IO_OBJDIR = build/io
+IO_SRCS = $(wildcard src/io/*.c)
+IO_HDRS = $(wildcard src/io/*.h)
+IO_FILES = $(notdir $(IO_SRCS))
+IO_OBJS = $(addprefix $(IO_OBJDIR)/, $(IO_FILES:.c=.o))
+
 # Cmdline
 CMDLINE_OBJDIR = build/cmdline
 CMDLINE_GEN_SRCS = src/cmdline/cmdline.c src/cmdline/cmdline.h
 CMDLINE_OBJS = $(CMDLINE_OBJDIR)/cmdline.o
 
-OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(HAGUE_OBJS)
+OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(IO_OBJS)
 
 bin: bin/hague
 
-bin/hague: $(CMDLINE_GEN_SRCS) $(OBJS)
+bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
-	$(CC) -o $@ $(CFLAGS) -I src/main/ -I src/graph/ -I src/cmdline/ $(INCS) $(OBJS) $(LINK)
+	$(CC) -o $@ $(CFLAGS) -I src/graph/ -I src/cmdline/ $(INCS) src/main/hague.c $(OBJS) $(LINK)
 
-$(HAGUE_OBJDIR)/%.o: src/main/%.c src/main/%.h
-	mkdir -p $(HAGUE_OBJDIR)
-	$(CC) -o $@ $(CFLAGS) -I src/main/ -I src/graph/ -I src/cmdline $(INCS) -c $<
+$(IO_OBJDIR)/%.o: src/io/%.c src/io/%.h
+	mkdir -p $(IO_OBJDIR)
+	$(CC) -o $@ $(CFLAGS) -I src/graph/ -I src/cmdline $(INCS) -c $<
 
 $(GRAPH_OBJDIR)/%.o: src/graph/%.c src/graph/%.h
 	mkdir -p $(GRAPH_OBJDIR)
