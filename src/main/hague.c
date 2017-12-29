@@ -7,11 +7,15 @@
 #include "../../libs/klib/kseq.h"
 #include "../io/reader.h"
 #include "../cmdline/cmdline.h"
+#include "../graph/hgraph.h"
 
 typedef struct gengetopt_args_info ggo_args;
 
-void
+hgraph*
 create_de_bruijn_graph(kseq_t*, int);
+
+char*
+strupr(char*);
 
 int
 main(int argc, char** argv)
@@ -20,6 +24,38 @@ main(int argc, char** argv)
     assert(cmdline_parser(argc, argv, &ai) == 0);
 
     return 0;
+}
+
+hgraph*
+create_de_bruijn_graph(kseq_t* seq, int k)
+{
+    hgraph* g = hgraph_create();
+
+    while ((kseq_read(seq)) >= 0)
+    {
+        char* s = seq->seq.s;
+
+        assert(strlen(s) >= k && "Sequence length must be equal to or greater than k-mer length");
+
+        for (int i = 0; i < strlen(s) - k + 1; i++)
+        {
+            char* kmer = malloc(k * sizeof(char) + 1);
+            strncpy(kmer, &s[i], k);
+            kmer[k] = '\0';
+            kmer = strupr(kmer);
+
+            char* lk = malloc((k - 1) * sizeof(char) + 1);
+            char* rk = malloc((k - 1) * sizeof(char) + 1);
+            strncpy(lk, kmer, (k - 1));
+            lk[k - 1] = '\0';
+            strncpy(rk, &kmer[1], (k - 1));
+            rk[k - 1] = '\0';
+            
+            hgraph_add_edge(g, lk, rk);
+        }
+    }
+
+    return g;
 }
 
 char*
