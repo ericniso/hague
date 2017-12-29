@@ -12,6 +12,8 @@ hgraph_create()
     hgraph* g = malloc(sizeof(hgraph));
     g->v = 0;
     g->e = 0;
+    g->walk_start = NULL;
+    g->walk_end = NULL;
     g->vertices = NULL;
 
     return g;
@@ -92,6 +94,9 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     hgraph_vertex* v_s = hgraph_get_vertex(g, start);
     v_s->outdegree++;
 
+    __update_walk_start_end(g, v_e);
+    __update_walk_start_end(g, v_s);
+
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
     hgraph_edge* e = malloc(sizeof(hgraph_edge));
@@ -127,4 +132,38 @@ hgraph_destroy(hgraph* g)
 
     free(g->vertices);
     free(g);
+}
+
+void
+__update_walk_start_end(hgraph* g, hgraph_vertex* v)
+{
+    assert_graph_init(g);
+
+    if (v == g->walk_start && v->indegree >= v->outdegree)
+        g->walk_start = NULL;
+
+    if (v == g->walk_end && v->indegree <= v->outdegree)
+        g->walk_end = NULL;
+
+    if (v->indegree < v->outdegree)
+            g->walk_start = v;
+
+    if (v->indegree > v->outdegree)
+            g->walk_end = v;
+}
+
+hgraph_vertex*
+hgraph_eulerian_walk_start(hgraph* g)
+{
+    assert_graph_init(g);
+
+    return g->walk_start;
+}
+
+hgraph_vertex*
+hgraph_eulerian_walk_end(hgraph* g)
+{
+    assert_graph_init(g);
+
+    return g->walk_end;
 }
