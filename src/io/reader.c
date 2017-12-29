@@ -1,4 +1,4 @@
-#include "io.h"
+#include "reader.h"
 
 void
 read_fasta(char* filename, kseq_t* seq)

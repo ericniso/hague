@@ -1,5 +1,5 @@
-#ifndef HAGUE_IO_H
-#define HAGUE_IO_H
+#ifndef HAGUE_READER_H
+#define HAGUE_READER_H
 
 #include <assert.h>
 #include <zlib.h>
