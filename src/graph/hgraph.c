@@ -123,3 +123,28 @@ hgraph_has_edge(hgraph* g, char* start, char* end)
 
     return found;
 }
+
+void
+hgraph_destroy(hgraph* g)
+{
+    assert_graph_init(g);
+
+    for (int i = 0; i < g->v; i++)
+    {
+        hgraph_vertex* v = g->vertices[i];
+
+        for (int j = 0; j < v->outdegree; j++)
+        {
+            hgraph_edge* e = v->neighbours[j];
+            free(e->end);
+            free(e);
+        }
+
+        free(v->key);
+        free(v->neighbours);
+        free(v);
+    }
+
+    free(g->vertices);
+    free(g);
+}
