@@ -92,7 +92,7 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     hgraph_vertex* v_s = hgraph_get_vertex(g, start);
     v_s->outdegree++;
 
-    v_s->neighbours = realloc(v_s->neighbours, sizeof(v_s->outdegree * sizeof(hgraph_edge*)));
+    v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
     hgraph_edge* e = malloc(sizeof(hgraph_edge));
     e->visited = false;
