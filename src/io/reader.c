@@ -1,11 +1,13 @@
 #include "reader.h"
 
-void
-read_fasta(char* filename, kseq_t* seq)
+kseq_t*
+read_fasta(char* filename)
 {
     gzFile fp;
     fp = gzopen(filename, "r");
     assert(fp != NULL && "Could not open fasta file");
-    seq = kseq_init(fp);
+    kseq_t* seq = kseq_init(fp);
     gzclose(fp);
+
+    return seq;
 }
