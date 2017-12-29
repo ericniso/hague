@@ -1,5 +1,5 @@
 #include "../../libs/klib/kseq.h"
-#include "../io/io.h"
+#include "../io/reader.h"
 #include "../cmdline/cmdline.h"
 
 typedef struct gengetopt_args_info ggo_args;
