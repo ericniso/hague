@@ -51,9 +51,6 @@ hgraph_add_vertex(hgraph*, char*);
 void
 hgraph_add_edge(hgraph*, char*, char*);
 
-bool
-hgraph_has_edge(hgraph*, char*, char*);
-
 void
 hgraph_destroy(hgraph*);
 
