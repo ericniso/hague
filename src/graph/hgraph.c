@@ -12,7 +12,7 @@ hgraph_create()
     hgraph* g = malloc(sizeof(hgraph));
     g->v = 0;
     g->e = 0;
-    g->vertices = malloc(g->v * sizeof(hgraph_vertex*));
+    g->vertices = NULL;
 
     return g;
 }
@@ -70,7 +70,7 @@ hgraph_add_vertex(hgraph* g, char* key)
         v->outdegree = 0;
         v->key = malloc(strlen(key) * sizeof(char) + 1);
         strcpy(v->key, key);
-        v->neighbours = malloc(0 * sizeof(hgraph_edge*));
+        v->neighbours = NULL;
 
         g->v++;
         g->vertices = realloc(g->vertices, g->v * sizeof(hgraph_vertex*));
