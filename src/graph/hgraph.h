@@ -54,7 +54,4 @@ hgraph_add_edge(hgraph*, char*, char*);
 void
 hgraph_destroy(hgraph*);
 
-void
-hgraph_destroy(hgraph*);
-
 #endif
