@@ -7,7 +7,7 @@
 
 KSEQ_INIT(gzFile, gzread)
 
-void
-read_fasta(char*, kseq_t*);
+kseq_t*
+read_fasta(char*);
 
 #endif
