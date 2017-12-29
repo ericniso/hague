@@ -16,8 +16,6 @@ struct hgraph
 {
     int v; /* Number of vertices */
     int e; /* Number of edges */
-    hgraph_vertex* walk_start; /* Eulerian walk starting node */
-    hgraph_vertex* walk_end; /* Eulerian walk ending node */
     hgraph_vertex** vertices; /* Map of vertices */
 };
 
@@ -55,9 +53,6 @@ hgraph_add_edge(hgraph*, char*, char*);
 
 void
 hgraph_destroy(hgraph*);
-
-void
-__update_walk_start_end(hgraph*, hgraph_vertex*);
 
 hgraph_vertex*
 hgraph_eulerian_walk_start(hgraph*);
