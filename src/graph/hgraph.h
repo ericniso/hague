@@ -16,6 +16,11 @@ struct hgraph
 {
     int v; /* Number of vertices */
     int e; /* Number of edges */
+    int v_balanced; /* Number of balanced vertices */
+    int v_semi_balanced; /* Number of semi-balanced vertices */
+    int v_generic; /* Number of vertices with different in/out edges */
+    hgraph_vertex* w_start; /* Starting vertex of Eulerian path (if exists) */
+    hgraph_vertex* w_end; /* Ending vertex of Eulerian path (if exists) */
     hgraph_vertex** vertices; /* Map of vertices */
 };
 
@@ -59,5 +64,17 @@ hgraph_eulerian_walk_start(hgraph*);
 
 hgraph_vertex*
 hgraph_eulerian_walk_end(hgraph*);
+
+void
+hgraph_compute__eulerian_path_properties(hgraph*);
+
+bool
+hgraph_has_eulerian_path(hgraph*);
+
+bool
+hgraph_has_eulerian_cycle(hgraph*);
+
+bool
+hgraph_has_eulerian_properties(hgraph*);
 
 #endif

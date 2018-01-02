@@ -6,12 +6,25 @@ assert_graph_init(hgraph* g)
     assert(g != NULL && "Graph is not initialized");
 }
 
+static inline void
+assert_eulerian_properties_computed(hgraph* g)
+{
+    assert_graph_init(g);
+
+    assert((g->v_balanced + g->v_semi_balanced + g->v_generic) == g->v
+        && "Eulerian properties not computed, try calling hgraph_compute__eulerian_path_properties(hgraph)");
+
+}
+
 hgraph*
 hgraph_create()
 {
     hgraph* g = malloc(sizeof(hgraph));
     g->v = 0;
     g->e = 0;
+    g->v_semi_balanced = 0;
+    g->v_balanced = 0;
+    g->v_generic = 0;
     g->vertices = NULL;
 
     return g;
@@ -132,19 +145,78 @@ hgraph_destroy(hgraph* g)
 hgraph_vertex*
 hgraph_eulerian_walk_start(hgraph* g)
 {
-    assert_graph_init(g);
+    assert_eulerian_properties_computed(g);
 
-    // TODO implement
-
-    return NULL;
+    return g->w_start;
 }
 
 hgraph_vertex*
 hgraph_eulerian_walk_end(hgraph* g)
 {
+    assert_eulerian_properties_computed(g);
+
+    return g->w_end;
+}
+
+void
+hgraph_compute__eulerian_path_properties(hgraph* g)
+{
     assert_graph_init(g);
 
-    // TODO implement
+    for (int i = 0; i < g->v; i++)
+    {
+        hgraph_vertex* v = g->vertices[i];
+        if (v->indegree == v->outdegree)
+        {
+            g->v_balanced++;
+        }
+        else if (abs(v->indegree - v->outdegree) == 1)
+        {
+            g->v_semi_balanced++;
 
-    return NULL;
+            if (v->indegree == v->outdegree + 1)
+            {
+                g->w_end = v;
+            }
+
+            if (v->outdegree == v->indegree + 1)
+            {
+                g->w_start = v;
+            }
+        }
+        else
+        {
+            g->v_generic++;
+        }
+    }
+
+    if (hgraph_has_eulerian_cycle(g))
+    {
+        g->w_start = g->vertices[0];
+        g->w_end = g->w_start;
+    }
+}
+
+bool
+hgraph_has_eulerian_path(hgraph* g)
+{
+    assert_eulerian_properties_computed(g);
+
+    return g->v_generic == 0 && g->v_semi_balanced == 2;
+}
+
+bool
+hgraph_has_eulerian_cycle(hgraph* g)
+{
+    assert_eulerian_properties_computed(g);
+
+    return g->v_generic == 0 && g->v_semi_balanced == 0;
+}
+
+bool
+hgraph_has_eulerian_properties(hgraph* g)
+{
+    assert_eulerian_properties_computed(g);
+
+    return hgraph_has_eulerian_path(g) || hgraph_has_eulerian_cycle(g);
 }
