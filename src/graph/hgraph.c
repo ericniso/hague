@@ -159,7 +159,7 @@ hgraph_eulerian_walk_end(hgraph* g)
 }
 
 void
-hgraph_compute__eulerian_path_properties(hgraph* g)
+hgraph_compute_eulerian_path_properties(hgraph* g)
 {
     assert_graph_init(g);
 

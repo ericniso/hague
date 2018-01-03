@@ -66,7 +66,7 @@ hgraph_vertex*
 hgraph_eulerian_walk_end(hgraph*);
 
 void
-hgraph_compute__eulerian_path_properties(hgraph*);
+hgraph_compute_eulerian_path_properties(hgraph*);
 
 bool
 hgraph_has_eulerian_path(hgraph*);
