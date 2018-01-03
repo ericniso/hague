@@ -29,6 +29,28 @@ main(int argc, char** argv)
     hgraph* g = create_de_bruijn_graph(seq, ai.k_mer_length_arg);
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
 
+    hgraph_compute_eulerian_path_properties(g);
+
+    if (hgraph_has_eulerian_properties(g))
+    {
+        hgraph_vertex* s = hgraph_eulerian_walk_start(g);
+        hgraph_vertex* e = hgraph_eulerian_walk_end(g);
+
+        if (hgraph_has_eulerian_cycle(g))
+            printf("Eulerian cycle, picking arbitrary starting vertex\n");
+
+        if (hgraph_has_eulerian_path(g))
+            printf("Eulerian path\n");
+
+        printf("Start: %s\nEnd: %s\n", s->key, e->key);
+    
+        printf("Path result: %s\n", hgraph_compute_eulerian_walk(g));
+    }
+    else
+    {
+        printf("Not an eulerian path");
+    }
+
     hgraph_destroy(g);
     kseq_destroy(seq);
     gzclose(fp);
