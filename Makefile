@@ -26,19 +26,12 @@ IO_HDRS = $(wildcard src/io/*.h)
 IO_FILES = $(notdir $(IO_SRCS))
 IO_OBJS = $(addprefix $(IO_OBJDIR)/, $(IO_FILES:.c=.o))
 
-# Hashmap
-MAP_OBJDIR = build/map
-MAP_SRCS = $(wildcard src/map/*.c)
-MAP_HDRS = $(wildcard src/map/*.h)
-MAP_FILES = $(notdir $(MAP_SRCS))
-MAP_OBJS = $(addprefix $(MAP_OBJDIR)/, $(MAP_FILES:.c=.o))
-
 # Cmdline
 CMDLINE_OBJDIR = build/cmdline
 CMDLINE_GEN_SRCS = src/cmdline/cmdline.c src/cmdline/cmdline.h
 CMDLINE_OBJS = $(CMDLINE_OBJDIR)/cmdline.o
 
-OBJS =  $(CMDLINE_OBJS) $(MAP_OBJS) $(GRAPH_OBJS) $(IO_OBJS)
+OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(IO_OBJS)
 
 bin: bin/hague
 
