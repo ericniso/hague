@@ -24,7 +24,7 @@ main(int argc, char** argv)
     assert(cmdline_parser(argc, argv, &ai) == 0);
 
     gzFile fp;
-    kseq_t* seq = read_fasta(ai.filename_arg, fp);
+    kseq_t* seq = read_fasta(ai.filename_arg, &fp);
 
     hgraph* g = create_de_bruijn_graph(seq, ai.k_mer_length_arg);
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
