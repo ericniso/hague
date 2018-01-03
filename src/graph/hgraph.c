@@ -220,3 +220,53 @@ hgraph_has_eulerian_properties(hgraph* g)
 
     return hgraph_has_eulerian_path(g) || hgraph_has_eulerian_cycle(g);
 }
+
+char*
+hgraph_compute_eulerian_walk(hgraph* g)
+{
+    assert_eulerian_properties_computed(g);
+
+    int result_length = g->e + 1 + 1;
+    char* result = malloc(result_length * sizeof(char) + 1);
+
+    hgraph_vertex* start = hgraph_eulerian_walk_start(g);
+    hgraph_vertex* end = hgraph_eulerian_walk_end(g);
+
+    result[0] = start->key[0];
+
+    hgraph_vertex* next = start;
+
+    for (int i = 1; i < result_length - 1; i++)
+    {   
+        next = __hgraph_eulerian_walk_next_vertex(g, next);
+        assert(next != NULL && "Not an Eulerian path");
+        result[i] = next->key[0];
+    }
+
+    result[result_length - 1] = end->key[strlen(end->key) -1];
+    result[result_length] = '\0';
+
+    return result;
+}
+
+hgraph_vertex*
+__hgraph_eulerian_walk_next_vertex(hgraph* g, hgraph_vertex* src)
+{
+    hgraph_vertex* v = NULL;
+    
+    int i = 0;
+    while (v == NULL && i < src->outdegree)
+    {
+        hgraph_edge* e = src->neighbours[i];
+
+        if (!e->visited)
+        {
+            e->visited = true;
+            v = hgraph_get_vertex(g, e->end);
+        }
+
+        i++;
+    }
+
+    return v;
+}
