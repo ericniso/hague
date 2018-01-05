@@ -2,7 +2,7 @@
 P = hague
 
 # Includes
-INCS = -I libs
+INCS = -I libs -I src
 
 # Lib linking
 LINK = -lz
@@ -37,23 +37,23 @@ bin: bin/hague
 
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
-	$(CC) -o $@ $(CFLAGS) -I src/graph/ -I src/cmdline/ $(INCS) src/main/hague.c $(OBJS) $(LINK)
+	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
 
 $(IO_OBJDIR)/%.o: src/io/%.c src/io/%.h
 	mkdir -p $(IO_OBJDIR)
-	$(CC) -o $@ $(CFLAGS) -I src/graph/ -I src/cmdline $(INCS) -c $<
+	$(CC) -o $@ $(CFLAGS) $(INCS) -c $<
 
 $(MAP_OBJDIR)/%.o: src/map/%.c src/map/%.h
 	mkdir -p $(MAP_OBJDIR)
-	$(CC) -o $@ $(CFLAGS) -I src/map/ $(INCS) -c $<
+	$(CC) -o $@ $(CFLAGS) $(INCS) -c $<
 
 $(GRAPH_OBJDIR)/%.o: src/graph/%.c src/graph/%.h
 	mkdir -p $(GRAPH_OBJDIR)
-	$(CC) -o $@ $(CFLAGS) -I src/graph/ $(INCS) -c $<
+	$(CC) -o $@ $(CFLAGS) $(INCS) -c $<
 
 $(CMDLINE_OBJDIR)/%.o: src/cmdline/%.c src/cmdline/%.h
 	mkdir -p $(CMDLINE_OBJDIR)
-	$(CC) -o $@ $(CFLAGS) -I src/cmdline/ $(INCS) -c $<
+	$(CC) -o $@ $(CFLAGS) $(INCS) -c $<
 
 $(CMDLINE_GEN_SRCS): conf/$(P).ggo
 	mkdir -p src/cmdline

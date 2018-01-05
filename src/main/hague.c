@@ -4,10 +4,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
-#include "../../libs/klib/kseq.h"
-#include "../io/reader.h"
-#include "../cmdline/cmdline.h"
-#include "../graph/hgraph.h"
+#include "klib/kseq.h"
+#include "io/reader.h"
+#include "cmdline/cmdline.h"
+#include "graph/hgraph.h"
 
 typedef struct gengetopt_args_info ggo_args;
 
