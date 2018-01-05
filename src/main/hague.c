@@ -4,6 +4,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <assert.h>
+#include <stdint.h>
 #include "klib/kseq.h"
 #include "io/reader.h"
 #include "cmdline/cmdline.h"
@@ -12,12 +13,12 @@
 typedef struct gengetopt_args_info ggo_args;
 
 hgraph*
-create_de_bruijn_graph(kseq_t*, int);
+create_de_bruijn_graph(kseq_t*, uint64_t);
 
 char*
 strupr(char*);
 
-int
+uint64_t
 main(int argc, char** argv)
 {
     ggo_args ai;
@@ -60,7 +61,7 @@ main(int argc, char** argv)
 }
 
 hgraph*
-create_de_bruijn_graph(kseq_t* seq, int k)
+create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 {
     hgraph* g = hgraph_create();
 
@@ -70,7 +71,7 @@ create_de_bruijn_graph(kseq_t* seq, int k)
 
         assert(strlen(s) >= k && "Sequence length must be equal to or greater than k-mer length");
 
-        for (int i = 0; i < strlen(s) - k + 1; i++)
+        for (uint64_t i = 0; i < strlen(s) - k + 1; i++)
         {
             char* kmer = malloc(k * sizeof(char) + 1);
             strncpy(kmer, &s[i], k);
@@ -95,7 +96,7 @@ char*
 strupr(char* s_l)
 {
     char* s_u = malloc(strlen(s_l) * sizeof(char) + 1);
-    int i = 0;
+    uint64_t i = 0;
     while(s_l[i] != '\0')
     {   
         char c;
