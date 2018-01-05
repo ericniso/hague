@@ -6,3 +6,6 @@ build
 
 # Ignore gengetopt generated files
 src/cmdline
+
+# Ignore project generated lib files
+lib
