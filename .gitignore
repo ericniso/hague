@@ -9,3 +9,6 @@ src/cmdline
 
 # Ignore project generated lib files
 lib
+
+# Ignore VS Code files
+.vscode
