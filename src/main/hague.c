@@ -19,7 +19,7 @@ char*
 strupr(char*);
 
 uint64_t
-main(int argc, char** argv)
+main(uint64_t argc, char** argv)
 {
     ggo_args ai;
     assert(cmdline_parser(argc, argv, &ai) == 0);
@@ -67,7 +67,7 @@ main(int argc, char** argv)
     hgraph_destroy(g);
     kseq_destroy(seq);
     gzclose(fp);
-    cmdline_parser_free (&ai);
+    cmdline_parser_free(&ai);
 
     return 0;
 }
