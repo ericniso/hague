@@ -130,6 +130,7 @@ hgraph_destroy(hgraph* g)
         free(v);
     }
 
+    free(g->vertices);
     free(g);
 }
 
