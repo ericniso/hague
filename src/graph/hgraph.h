@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
+#include <stdint.h>
+#include "hash/uthash.h"
 
 typedef struct hgraph hgraph;
 
@@ -14,22 +16,23 @@ typedef struct hgraph_edge hgraph_edge;
 
 struct hgraph
 {
-    int v; /* Number of vertices */
-    int e; /* Number of edges */
-    int v_balanced; /* Number of balanced vertices */
-    int v_semi_balanced; /* Number of semi-balanced vertices */
-    int v_generic; /* Number of vertices with different in/out edges */
+    uint64_t v; /* Number of vertices */
+    uint64_t e; /* Number of edges */
+    uint64_t v_balanced; /* Number of balanced vertices */
+    uint64_t v_semi_balanced; /* Number of semi-balanced vertices */
+    uint64_t v_generic; /* Number of vertices with different in/out edges */
     hgraph_vertex* w_start; /* Starting vertex of Eulerian path (if exists) */
     hgraph_vertex* w_end; /* Ending vertex of Eulerian path (if exists) */
-    hgraph_vertex** vertices; /* Map of vertices */
+    hgraph_vertex* vertices; /* Map of vertices */
 };
 
 struct hgraph_vertex
 {
     char* key; /* Node identifier */
-    int indegree; /* Indegree */
-    int outdegree; /* Outdegree */ 
+    uint64_t indegree; /* Indegree */
+    uint64_t outdegree; /* Outdegree */ 
     struct hgraph_edge** neighbours; /* Connected edges */
+    UT_hash_handle hh; /* Make this struct hashable */
 };
 
 struct hgraph_edge
@@ -41,10 +44,10 @@ struct hgraph_edge
 hgraph*
 hgraph_create();
 
-int
+uint64_t
 hgraph_vertex_count(hgraph*);
 
-int
+uint64_t
 hgraph_edge_count(hgraph*);
 
 hgraph_vertex*

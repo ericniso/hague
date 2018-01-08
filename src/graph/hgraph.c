@@ -25,12 +25,14 @@ hgraph_create()
     g->v_semi_balanced = 0;
     g->v_balanced = 0;
     g->v_generic = 0;
+    g->w_start = NULL;
+    g->w_end = NULL;
     g->vertices = NULL;
 
     return g;
 }
 
-int
+uint64_t
 hgraph_vertex_count(hgraph* g)
 {
     assert_graph_init(g);
@@ -38,7 +40,7 @@ hgraph_vertex_count(hgraph* g)
     return g->v;
 }
 
-int
+uint64_t
 hgraph_edge_count(hgraph* g)
 {
     assert_graph_init(g);
@@ -51,21 +53,9 @@ hgraph_get_vertex(hgraph* g, char* key)
 {
     assert_graph_init(g);
 
-    int i = 0;
-    bool found = false;
     hgraph_vertex* v = NULL;
 
-    while(!found && i < g->v)
-    {
-        hgraph_vertex* curr = g->vertices[i];
-        if (strcmp(curr->key, key) == 0)
-        {
-            v = curr;
-            found = true;
-        }
-
-        i++;
-    }
+    HASH_FIND_STR(g->vertices, key, v);
 
     return v;
 }
@@ -86,8 +76,7 @@ hgraph_add_vertex(hgraph* g, char* key)
         v->neighbours = NULL;
 
         g->v++;
-        g->vertices = realloc(g->vertices, g->v * sizeof(hgraph_vertex*));
-        g->vertices[g->v - 1] = v;
+        HASH_ADD_STR(g->vertices, key, v);
     }    
 }
 
@@ -122,11 +111,14 @@ hgraph_destroy(hgraph* g)
 {
     assert_graph_init(g);
 
-    for (int i = 0; i < g->v; i++)
-    {
-        hgraph_vertex* v = g->vertices[i];
+    hgraph_vertex* v = NULL;
+    hgraph_vertex* tmp = NULL;
 
-        for (int j = 0; j < v->outdegree; j++)
+    HASH_ITER(hh, g->vertices, v, tmp) {
+
+        HASH_DEL(g->vertices, v);
+
+        for (uint64_t j = 0; j < v->outdegree; j++)
         {
             hgraph_edge* e = v->neighbours[j];
             free(e->end);
@@ -163,9 +155,11 @@ hgraph_compute_eulerian_path_properties(hgraph* g)
 {
     assert_graph_init(g);
 
-    for (int i = 0; i < g->v; i++)
-    {
-        hgraph_vertex* v = g->vertices[i];
+    hgraph_vertex* v = NULL;
+    hgraph_vertex* tmp = NULL;
+
+    HASH_ITER(hh, g->vertices, v, tmp) {
+
         if (v->indegree == v->outdegree)
         {
             g->v_balanced++;
@@ -190,11 +184,13 @@ hgraph_compute_eulerian_path_properties(hgraph* g)
         }
     }
 
+    /* TODO fix
     if (hgraph_has_eulerian_cycle(g))
     {
         g->w_start = g->vertices[0];
         g->w_end = g->w_start;
     }
+    */
 }
 
 bool
@@ -226,7 +222,7 @@ hgraph_compute_eulerian_walk(hgraph* g)
 {
     assert_eulerian_properties_computed(g);
 
-    int result_length = g->e + 1 + 1;
+    uint64_t result_length = g->e + 1 + 1;
     char* result = malloc(result_length * sizeof(char) + 1);
 
     hgraph_vertex* start = hgraph_eulerian_walk_start(g);
@@ -236,7 +232,7 @@ hgraph_compute_eulerian_walk(hgraph* g)
 
     hgraph_vertex* next = start;
 
-    for (int i = 1; i < result_length - 1; i++)
+    for (uint64_t i = 1; i < result_length - 1; i++)
     {   
         next = __hgraph_eulerian_walk_next_vertex(g, next);
         assert(next != NULL && "Not an Eulerian path");
@@ -254,7 +250,7 @@ __hgraph_eulerian_walk_next_vertex(hgraph* g, hgraph_vertex* src)
 {
     hgraph_vertex* v = NULL;
     
-    int i = 0;
+    uint64_t i = 0;
     while (v == NULL && i < src->outdegree)
     {
         hgraph_edge* e = src->neighbours[i];
