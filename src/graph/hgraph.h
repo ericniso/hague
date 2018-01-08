@@ -31,13 +31,13 @@ struct hgraph_vertex
     char* key; /* Node identifier */
     uint64_t indegree; /* Indegree */
     uint64_t outdegree; /* Outdegree */ 
+    uint64_t next_neighbour; /* Next neighbour index, needed for linear search */
     struct hgraph_edge** neighbours; /* Connected edges */
     UT_hash_handle hh; /* Make this struct hashable */
 };
 
 struct hgraph_edge
 {
-    bool visited; /* Needed for Eulerian walk algorithm */
     char* end; /* Ending node key */
 };
 

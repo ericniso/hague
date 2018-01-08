@@ -71,6 +71,7 @@ hgraph_add_vertex(hgraph* g, char* key)
         v = malloc(sizeof(hgraph_vertex));
         v->indegree = 0;
         v->outdegree = 0;
+        v->next_neighbour = 0;
         v->key = malloc(strlen(key) * sizeof(char) + 1);
         strcpy(v->key, key);
         v->neighbours = NULL;
@@ -97,7 +98,6 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
     hgraph_edge* e = malloc(sizeof(hgraph_edge));
-    e->visited = false;
     e->end = malloc(strlen(end) * sizeof(char) + 1);
     strcpy(e->end, end);
 
@@ -249,19 +249,13 @@ hgraph_vertex*
 __hgraph_eulerian_walk_next_vertex(hgraph* g, hgraph_vertex* src)
 {
     hgraph_vertex* v = NULL;
-    
-    uint64_t i = 0;
-    while (v == NULL && i < src->outdegree)
+
+    uint64_t i = src->next_neighbour;
+    if (i < src->outdegree)
     {
         hgraph_edge* e = src->neighbours[i];
-
-        if (!e->visited)
-        {
-            e->visited = true;
-            v = hgraph_get_vertex(g, e->end);
-        }
-
-        i++;
+        src->next_neighbour++;
+        v = hgraph_get_vertex(g, e->end);
     }
 
     return v;
