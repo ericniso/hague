@@ -23,7 +23,7 @@ struct hgraph
     uint64_t v_generic; /* Number of vertices with different in/out edges */
     hgraph_vertex* w_start; /* Starting vertex of Eulerian path (if exists) */
     hgraph_vertex* w_end; /* Ending vertex of Eulerian path (if exists) */
-    hgraph_vertex** vertices; /* Map of vertices */
+    hgraph_vertex* vertices; /* Map of vertices */
 };
 
 struct hgraph_vertex
@@ -32,6 +32,7 @@ struct hgraph_vertex
     uint64_t indegree; /* Indegree */
     uint64_t outdegree; /* Outdegree */ 
     struct hgraph_edge** neighbours; /* Connected edges */
+    UT_hash_handle hh; /* Make this struct hashable */
 };
 
 struct hgraph_edge
