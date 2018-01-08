@@ -28,12 +28,16 @@ main(int argc, char** argv)
     kseq_t* seq = read_fasta(ai.filename_arg, &fp);
 
     hgraph* g = create_de_bruijn_graph(seq, ai.k_mer_length_arg);
+
+#ifdef DEBUG
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
+#endif
 
     hgraph_compute_eulerian_path_properties(g);
 
     if (hgraph_has_eulerian_properties(g))
     {
+#ifdef DEBUG
         hgraph_vertex* s = hgraph_eulerian_walk_start(g);
         hgraph_vertex* e = hgraph_eulerian_walk_end(g);
 
@@ -44,12 +48,20 @@ main(int argc, char** argv)
             printf("Eulerian path\n");
 
         printf("Start: %s\nEnd: %s\n", s->key, e->key);
-    
-        printf("Path result: %s\n", hgraph_compute_eulerian_walk(g));
+
+        printf("Path result: ");
+#endif
+        printf("%s", hgraph_compute_eulerian_walk(g));
+
+#ifdef DEBUG
+        printf("\n");
+#endif
     }
     else
     {
+#ifdef DEBUG
         printf("Not an eulerian path");
+#endif    
     }
 
     hgraph_destroy(g);

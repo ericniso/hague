@@ -1,6 +1,9 @@
 # Ignore executables
 bin
 
+# Ignore debug executables
+debug
+
 # Ignore build files
 build
 
