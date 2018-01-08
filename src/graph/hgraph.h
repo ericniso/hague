@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdint.h>
+#include "hash/uthash.h"
 
 typedef struct hgraph hgraph;
 
