@@ -37,8 +37,6 @@ bin: bin/hague
 
 debug: debug/hague
 
-lib: lib/libhague.so
-
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
@@ -46,11 +44,6 @@ bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 debug/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p debug
 	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c -DDEBUG $(OBJS) $(LINK)
-
-lib/libhague.so: $(GRAPH_SRCS) $(GRAPH_HDRS)
-	mkdir -p lib
-	$(CC) -o $@ -shared -fPIC $(CFLAGS) $(GRAPH_SRCS)
-	cp src/graph/hgraph.h lib/libhague.h
 
 
 $(IO_OBJDIR)/%.o: src/io/%.c src/io/%.h
@@ -74,6 +67,6 @@ $(CMDLINE_GEN_SRCS): conf/$(P).ggo
 	gengetopt -i $< --output-dir=src/cmdline/
 
 clean:
-	rm -rf bin lib build src/cmdline
+	rm -rf bin build src/cmdline
 
-.PHONY: bin debug lib clean
+.PHONY: bin debug clean

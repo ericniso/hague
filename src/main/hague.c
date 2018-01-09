@@ -15,9 +15,6 @@ typedef struct gengetopt_args_info ggo_args;
 hgraph*
 create_de_bruijn_graph(kseq_t*, uint64_t);
 
-char*
-strupr(char*);
-
 uint64_t
 main(uint64_t argc, char** argv)
 {
@@ -88,7 +85,6 @@ create_de_bruijn_graph(kseq_t* seq, uint64_t k)
             char* kmer = malloc(k * sizeof(char) + 1);
             strncpy(kmer, &s[i], k);
             kmer[k] = '\0';
-            kmer = strupr(kmer);
 
             char* lk = malloc((k - 1) * sizeof(char) + 1);
             char* rk = malloc((k - 1) * sizeof(char) + 1);
@@ -102,26 +98,4 @@ create_de_bruijn_graph(kseq_t* seq, uint64_t k)
     }
 
     return g;
-}
-
-char*
-strupr(char* s_l)
-{
-    char* s_u = malloc(strlen(s_l) * sizeof(char) + 1);
-    uint64_t i = 0;
-    while(s_l[i] != '\0')
-    {   
-        char c;
-
-        if (s_l[i] >= 'a' && s_l[i] <= 'z')
-            c = toupper(s_l[i]);
-        else
-            c = s_l[i];
-
-        s_u[i] = c;
-        i++;
-    }
-    
-    s_u[strlen(s_l)] = '\0';
-    return s_u;
 }
