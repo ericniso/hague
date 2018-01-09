@@ -122,6 +122,6 @@ strupr(char* s_l)
         i++;
     }
     
-    s_u[strlen(s_l) + 1] = '\0';
+    s_u[strlen(s_l)] = '\0';
     return s_u;
 }
