@@ -83,7 +83,4 @@ hgraph_has_eulerian_properties(hgraph*);
 char*
 hgraph_compute_eulerian_walk(hgraph*);
 
-hgraph_vertex*
-__hgraph_eulerian_walk_next_vertex(hgraph* g, hgraph_vertex* src);
-
 #endif

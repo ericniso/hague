@@ -234,7 +234,14 @@ hgraph_compute_eulerian_walk(hgraph* g)
 
     for (uint64_t i = 1; i < result_length - 1; i++)
     {   
-        next = __hgraph_eulerian_walk_next_vertex(g, next);
+        uint64_t j = next->next_neighbour;
+        if (j < next->outdegree)
+        {
+            hgraph_edge* e = next->neighbours[j];
+            next->next_neighbour++;
+            next = hgraph_get_vertex(g, e->end);
+        }
+
         assert(next != NULL && "Not an Eulerian path");
         result[i] = next->key[0];
     }
@@ -243,20 +250,4 @@ hgraph_compute_eulerian_walk(hgraph* g)
     result[result_length] = '\0';
 
     return result;
-}
-
-hgraph_vertex*
-__hgraph_eulerian_walk_next_vertex(hgraph* g, hgraph_vertex* src)
-{
-    hgraph_vertex* v = NULL;
-
-    uint64_t i = src->next_neighbour;
-    if (i < src->outdegree)
-    {
-        hgraph_edge* e = src->neighbours[i];
-        src->next_neighbour++;
-        v = hgraph_get_vertex(g, e->end);
-    }
-
-    return v;
 }
