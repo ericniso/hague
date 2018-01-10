@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include <assert.h>
 #include <stdint.h>
+#include "utils/initializer.h"
 #include "klib/kseq.h"
 #include "io/reader.h"
 #include "cmdline/cmdline.h"

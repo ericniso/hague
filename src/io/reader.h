@@ -3,9 +3,8 @@
 
 #include <assert.h>
 #include <zlib.h>
+#include "utils/initializer.h"
 #include "klib/kseq.h"
-
-KSEQ_INIT(gzFile, gzread)
 
 kseq_t*
 read_fasta(char*, gzFile*);

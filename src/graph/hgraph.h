@@ -6,6 +6,8 @@
 #include <assert.h>
 #include <string.h>
 #include <stdint.h>
+#include "utils/initializer.h"
+#include "klib/kseq.h"
 #include "hash/uthash.h"
 
 typedef struct hgraph hgraph;
