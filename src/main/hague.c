@@ -13,9 +13,6 @@
 
 typedef struct gengetopt_args_info ggo_args;
 
-hgraph*
-create_de_bruijn_graph(kseq_t*, uint64_t);
-
 uint64_t
 main(uint64_t argc, char** argv)
 {
@@ -25,7 +22,7 @@ main(uint64_t argc, char** argv)
     gzFile fp;
     kseq_t* seq = read_fasta(ai.filename_arg, &fp);
 
-    hgraph* g = create_de_bruijn_graph(seq, ai.k_mer_length_arg);
+    hgraph* g = hgraph_create_de_bruijn_graph(seq, ai.k_mer_length_arg);
 
 #ifdef DEBUG
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
@@ -68,35 +65,4 @@ main(uint64_t argc, char** argv)
     cmdline_parser_free(&ai);
 
     return 0;
-}
-
-hgraph*
-create_de_bruijn_graph(kseq_t* seq, uint64_t k)
-{
-    hgraph* g = hgraph_create();
-
-    while ((kseq_read(seq)) >= 0)
-    {
-        char* s = seq->seq.s;
-
-        assert(strlen(s) >= k && "Sequence length must be equal to or greater than k-mer length");
-
-        for (uint64_t i = 0; i < strlen(s) - k + 1; i++)
-        {
-            char* kmer = malloc(k * sizeof(char) + 1);
-            strncpy(kmer, &s[i], k);
-            kmer[k] = '\0';
-
-            char* lk = malloc((k - 1) * sizeof(char) + 1);
-            char* rk = malloc((k - 1) * sizeof(char) + 1);
-            strncpy(lk, kmer, (k - 1));
-            lk[k - 1] = '\0';
-            strncpy(rk, &kmer[1], (k - 1));
-            rk[k - 1] = '\0';
-            
-            hgraph_add_edge(g, lk, rk);
-        }
-    }
-
-    return g;
 }

@@ -85,4 +85,7 @@ hgraph_has_eulerian_properties(hgraph*);
 char*
 hgraph_compute_eulerian_walk(hgraph*);
 
+hgraph*
+hgraph_create_de_bruijn_graph(kseq_t*, uint64_t);
+
 #endif

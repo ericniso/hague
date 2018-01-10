@@ -251,3 +251,34 @@ hgraph_compute_eulerian_walk(hgraph* g)
 
     return result;
 }
+
+hgraph*
+hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
+{
+    hgraph* g = hgraph_create();
+
+    while ((kseq_read(seq)) >= 0)
+    {
+        char* s = seq->seq.s;
+
+        assert(strlen(s) >= k && "Sequence length must be equal to or greater than k-mer length");
+
+        for (uint64_t i = 0; i < strlen(s) - k + 1; i++)
+        {
+            char* kmer = malloc(k * sizeof(char) + 1);
+            strncpy(kmer, &s[i], k);
+            kmer[k] = '\0';
+
+            char* lk = malloc((k - 1) * sizeof(char) + 1);
+            char* rk = malloc((k - 1) * sizeof(char) + 1);
+            strncpy(lk, kmer, (k - 1));
+            lk[k - 1] = '\0';
+            strncpy(rk, &kmer[1], (k - 1));
+            rk[k - 1] = '\0';
+            
+            hgraph_add_edge(g, lk, rk);
+        }
+    }
+
+    return g;
+}
