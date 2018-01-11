@@ -35,15 +35,9 @@ OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(IO_OBJS)
 
 bin: bin/hague
 
-debug: debug/hague
-
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
-
-debug/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
-	mkdir -p debug
-	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c -DDEBUG $(OBJS) $(LINK)
 
 
 $(IO_OBJDIR)/%.o: src/io/%.c src/io/%.h
@@ -69,4 +63,4 @@ $(CMDLINE_GEN_SRCS): conf/$(P).ggo
 clean:
 	rm -rf bin build src/cmdline
 
-.PHONY: bin debug clean
+.PHONY: bin clean
