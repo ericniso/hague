@@ -46,7 +46,9 @@ main(uint64_t argc, char** argv)
 
         printf("Path result: ");
 #endif
-        printf("%s", hgraph_compute_eulerian_walk(g));
+        char* superstring = hgraph_compute_eulerian_walk(g);
+        printf("%s", superstring);
+        free(superstring);
 
 #ifdef DEBUG
         printf("\n");
