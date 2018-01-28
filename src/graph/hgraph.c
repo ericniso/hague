@@ -275,8 +275,12 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
             lk[k - 1] = '\0';
             strncpy(rk, &kmer[1], (k - 1));
             rk[k - 1] = '\0';
-            
+
             hgraph_add_edge(g, lk, rk);
+
+            free(kmer);
+            free(lk);
+            free(rk);
         }
     }
 
