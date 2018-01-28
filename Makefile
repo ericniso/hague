@@ -8,7 +8,7 @@ INCS = -I libs -I src
 LINK = -lz
 
 # C flags
-CFLAGS = -m64 -std=c11 -Wall -Wextra
+CFLAGS = -g -m64 -std=c11 -Wall -Wextra
 
 # Sources
 
