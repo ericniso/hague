@@ -60,7 +60,7 @@ hgraph_get_vertex(hgraph* g, char* key)
     return v;
 }
 
-void
+hgraph_vertex*
 hgraph_add_vertex(hgraph* g, char* key)
 {
     assert_graph_init(g);
@@ -79,21 +79,20 @@ hgraph_add_vertex(hgraph* g, char* key)
         g->v++;
         HASH_ADD_STR(g->vertices, key, v);
     }    
+
+    return v;
 }
 
-void
+hgraph_edge*
 hgraph_add_edge(hgraph* g, char* start, char* end)
 {
     assert_graph_init(g);
 
-    hgraph_add_vertex(g, start);
-    hgraph_add_vertex(g, end);
-
-    hgraph_vertex* v_e = hgraph_get_vertex(g, end);
-    v_e->indegree++;
-
-    hgraph_vertex* v_s = hgraph_get_vertex(g, start);
+    hgraph_vertex* v_s = hgraph_add_vertex(g, start);
     v_s->outdegree++;
+    
+    hgraph_vertex* v_e = hgraph_add_vertex(g, end);
+    v_e->indegree++;
 
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
@@ -104,6 +103,8 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     v_s->neighbours[v_s->outdegree - 1] = e;
 
     g->e++;
+
+    return e;
 }
 
 void

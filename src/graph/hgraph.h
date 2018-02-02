@@ -55,10 +55,10 @@ hgraph_edge_count(hgraph*);
 hgraph_vertex*
 hgraph_get_vertex(hgraph*, char*);
 
-void
+hgraph_vertex*
 hgraph_add_vertex(hgraph*, char*);
 
-void
+hgraph_edge*
 hgraph_add_edge(hgraph*, char*, char*);
 
 void
