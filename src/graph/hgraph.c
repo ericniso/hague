@@ -257,9 +257,10 @@ hgraph*
 hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 {
     hgraph* g = hgraph_create();
-
+    bool validfile = false;
     while ((kseq_read(seq)) >= 0)
     {
+        validfile = true;
         char* s = seq->seq.s;
 
         assert(strlen(s) >= k && "Sequence length must be equal to or greater than k-mer length");
@@ -284,6 +285,8 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
             free(rk);
         }
     }
+
+    assert(validfile && "Invalid file content");
 
     return g;
 }
