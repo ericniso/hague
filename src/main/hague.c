@@ -22,6 +22,8 @@ main(uint64_t argc, char** argv)
     ggo_args ai;
     assert(cmdline_parser(argc, argv, &ai) == 0);
 
+    assert(ai.k_mer_length_arg > 1 && "k-mer length must be greater than 1");
+
     gzFile fp;
     kseq_t* seq = read_fasta(ai.filename_arg, &fp);
 
