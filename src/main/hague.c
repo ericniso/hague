@@ -16,6 +16,9 @@ typedef struct gengetopt_args_info ggo_args;
 uint64_t
 main(uint64_t argc, char** argv)
 {
+
+    uint8_t result_code = EXIT_SUCCESS;
+
     ggo_args ai;
     assert(cmdline_parser(argc, argv, &ai) == 0);
 
@@ -58,7 +61,8 @@ main(uint64_t argc, char** argv)
     {
 #ifdef DEBUG
         printf("Not an eulerian path");
-#endif    
+#endif
+        result_code = EXIT_FAILURE;    
     }
 
     hgraph_destroy(g);
@@ -66,5 +70,5 @@ main(uint64_t argc, char** argv)
     gzclose(fp);
     cmdline_parser_free(&ai);
 
-    return 0;
+    return result_code;
 }
