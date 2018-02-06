@@ -157,9 +157,15 @@ hgraph_compute_eulerian_path_properties(hgraph* g)
     assert_graph_init(g);
 
     hgraph_vertex* v = NULL;
+    hgraph_vertex* first = NULL;
     hgraph_vertex* tmp = NULL;
 
     HASH_ITER(hh, g->vertices, v, tmp) {
+        
+        if (first == NULL)
+        {
+            first = v;
+        }
 
         if (v->indegree == v->outdegree)
         {
@@ -185,13 +191,11 @@ hgraph_compute_eulerian_path_properties(hgraph* g)
         }
     }
 
-    /* TODO fix
     if (hgraph_has_eulerian_cycle(g))
     {
-        g->w_start = g->vertices[0];
+        g->w_start = first;
         g->w_end = g->w_start;
     }
-    */
 }
 
 bool
