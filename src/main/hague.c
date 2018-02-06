@@ -13,7 +13,7 @@
 
 typedef struct gengetopt_args_info ggo_args;
 
-uint64_t
+uint8_t
 main(uint64_t argc, char** argv)
 {
 
