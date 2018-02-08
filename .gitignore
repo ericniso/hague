@@ -15,3 +15,13 @@ lib
 
 # Ignore VS Code files
 .vscode
+
+# Ignore CLion files
+.idea/
+
+# Ignore CMake debug files
+CmakeLists.txt
+cmake-build-debug/
+
+# Ignore generated csv file
+graph.csv
