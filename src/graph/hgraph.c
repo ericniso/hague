@@ -115,7 +115,8 @@ hgraph_destroy(hgraph* g)
     hgraph_vertex* v = NULL;
     hgraph_vertex* tmp = NULL;
 
-    HASH_ITER(hh, g->vertices, v, tmp) {
+    HASH_ITER(hh, g->vertices, v, tmp)
+    {
 
         HASH_DEL(g->vertices, v);
 
@@ -310,11 +311,12 @@ export_graph_to_csv(hgraph* g, char* filename)
     FILE *f = fopen(filename, "w");
     fprintf(f, "Source, Target, Label\n");
 
-    HASH_ITER(hh, g->vertices, v, tmp) {
-        for(int i = 0; i < v->outdegree; i++)
+    HASH_ITER(hh, g->vertices, v, tmp)
+    {
+        for(uint64_t i = 0; i < v->outdegree; i++)
         {
             char* end = v->neighbours[i]->end;
-            fprintf(f, "%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end)-1]);
+            fprintf(f, "%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end) - 1]);
         }
     }
 
@@ -329,11 +331,12 @@ print_graph(hgraph* g)
     hgraph_vertex* tmp = NULL;
     printf("Source, Target, Label\n");
 
-    HASH_ITER(hh, g->vertices, v, tmp) {
-        for(int i = 0; i < v->outdegree; i++)
+    HASH_ITER(hh, g->vertices, v, tmp)
+    {
+        for(uint64_t i = 0; i < v->outdegree; i++)
         {
             char* end = v->neighbours[i]->end;
-            printf("%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end)-1]);
+            printf("%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end) - 1]);
         }
     }
 }

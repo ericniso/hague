@@ -73,9 +73,15 @@ main(uint64_t argc, char** argv)
             char* superstring = hgraph_compute_eulerian_walk(g);
             if(ai.output_file_arg)
             {
-                FILE *f;
-                if(ai.output_graph_given) { f = fopen(ai.output_file_arg, "a"); }
-                else { f = fopen(ai.output_file_arg, "w"); }
+                FILE *f = NULL;
+                if(ai.output_graph_given)
+                {
+                    f = fopen(ai.output_file_arg, "a");
+                }
+                else
+                {
+                    f = fopen(ai.output_file_arg, "w");
+                }
 
                 fprintf(f, "%s", superstring);
             }
