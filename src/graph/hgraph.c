@@ -227,17 +227,18 @@ hgraph_compute_eulerian_walk(hgraph* g)
 {
     assert_eulerian_properties_computed(g);
 
-    uint64_t result_length = g->e + 1 + 1;
-    char* result = malloc(result_length * sizeof(char) + 1);
-
     hgraph_vertex* start = hgraph_eulerian_walk_start(g);
     hgraph_vertex* end = hgraph_eulerian_walk_end(g);
+
+    uint64_t result_length = g->e + strlen(end->key);
+    char* result = malloc(result_length * sizeof(char) + 1);
 
     result[0] = start->key[0];
 
     hgraph_vertex* next = start;
 
-    for (uint64_t i = 1; i < result_length - 1; i++)
+    uint64_t i;
+    for (i = 1; i < result_length - strlen(end->key); i++)
     {   
         uint64_t j = next->next_neighbour;
         if (j < next->outdegree)
@@ -251,7 +252,13 @@ hgraph_compute_eulerian_walk(hgraph* g)
         result[i] = next->key[0];
     }
 
-    result[result_length - 1] = end->key[strlen(end->key) -1];
+    uint64_t j = 0;
+    for (i; i < result_length; i++)
+    {
+        result[i] = end->key[j];
+        j++;
+    }
+
     result[result_length] = '\0';
 
     return result;
