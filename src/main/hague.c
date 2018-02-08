@@ -29,7 +29,17 @@ main(uint64_t argc, char** argv)
 
     hgraph* g = hgraph_create_de_bruijn_graph(seq, ai.k_mer_length_arg);
 
-    if(ai.output_graph_given)
+#ifdef DEBUG
+    printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
+#endif
+
+    if (ai.output_graph_given && ai.output_walk_given)
+    {
+        result_code = EXIT_FAILURE;
+        
+        printf("%s: only one option between '--output-graph' ('-g') and '--output-walk' ('-w') can be executed\n", argv[0]);
+    }
+    else if(ai.output_graph_given)
     {
         if(ai.output_file_arg)
         {
@@ -40,13 +50,7 @@ main(uint64_t argc, char** argv)
             print_graph(g);
         }
     }
-
-
-#ifdef DEBUG
-    printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
-#endif
-
-    if(ai.output_walk_given)
+    else if(ai.output_walk_given)
     {
         hgraph_compute_eulerian_path_properties(g);
 
@@ -54,17 +58,17 @@ main(uint64_t argc, char** argv)
         {
 #ifdef DEBUG
             hgraph_vertex* s = hgraph_eulerian_walk_start(g);
-        hgraph_vertex* e = hgraph_eulerian_walk_end(g);
+            hgraph_vertex* e = hgraph_eulerian_walk_end(g);
 
-        if (hgraph_has_eulerian_cycle(g))
-            printf("Eulerian cycle, picking arbitrary starting vertex\n");
+            if (hgraph_has_eulerian_cycle(g))
+                printf("Eulerian cycle, picking arbitrary starting vertex\n");
 
-        if (hgraph_has_eulerian_path(g))
-            printf("Eulerian path\n");
+            if (hgraph_has_eulerian_path(g))
+                printf("Eulerian path\n");
 
-        printf("Start: %s\nEnd: %s\n", s->key, e->key);
+            printf("Start: %s\nEnd: %s\n", s->key, e->key);
 
-        printf("Path result: ");
+            printf("Path result: ");
 #endif
             char* superstring = hgraph_compute_eulerian_walk(g);
             if(ai.output_file_arg)
@@ -93,6 +97,12 @@ main(uint64_t argc, char** argv)
 #endif
             result_code = EXIT_FAILURE;
         }
+    }
+    else
+    {
+        result_code = EXIT_FAILURE;
+
+        printf("%s: '--output-graph' ('-g') or '--output-walk' ('-w') options required\n", argv[0]);
     }
 
 
