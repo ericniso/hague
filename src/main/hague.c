@@ -29,9 +29,16 @@ main(uint64_t argc, char** argv)
 
     hgraph* g = hgraph_create_de_bruijn_graph(seq, ai.k_mer_length_arg);
 
-    if(ai.export_csv_given)
+    if(ai.output_graph_given)
     {
-        export_graph_to_csv(g);
+        if(ai.output_file_arg)
+        {
+            export_graph_to_csv(g, ai.output_file_arg);
+        }
+        else
+        {
+            print_graph(g);
+        }
     }
 
 
@@ -39,12 +46,14 @@ main(uint64_t argc, char** argv)
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
 #endif
 
-    hgraph_compute_eulerian_path_properties(g);
-
-    if (hgraph_has_eulerian_properties(g))
+    if(ai.output_walk_given)
     {
+        hgraph_compute_eulerian_path_properties(g);
+
+        if (hgraph_has_eulerian_properties(g))
+        {
 #ifdef DEBUG
-        hgraph_vertex* s = hgraph_eulerian_walk_start(g);
+            hgraph_vertex* s = hgraph_eulerian_walk_start(g);
         hgraph_vertex* e = hgraph_eulerian_walk_end(g);
 
         if (hgraph_has_eulerian_cycle(g))
@@ -57,21 +66,35 @@ main(uint64_t argc, char** argv)
 
         printf("Path result: ");
 #endif
-        char* superstring = hgraph_compute_eulerian_walk(g);
-        printf("%s", superstring);
-        free(superstring);
+            char* superstring = hgraph_compute_eulerian_walk(g);
+            if(ai.output_file_arg)
+            {
+                FILE *f;
+                if(ai.output_graph_given) { f = fopen(ai.output_file_arg, "a"); }
+                else { f = fopen(ai.output_file_arg, "w"); }
+
+                fprintf(f, "%s", superstring);
+            }
+            else
+            {
+                printf("%s", superstring);
+            }
+
+            free(superstring);
 
 #ifdef DEBUG
-        printf("\n");
+            printf("\n");
 #endif
-    }
-    else
-    {
+        }
+        else
+        {
 #ifdef DEBUG
-        printf("Not an eulerian path");
+            printf("Not an eulerian path");
 #endif
-        result_code = EXIT_FAILURE;    
+            result_code = EXIT_FAILURE;
+        }
     }
+
 
     hgraph_destroy(g);
     kseq_destroy(seq);

@@ -24,4 +24,4 @@ CmakeLists.txt
 cmake-build-debug/
 
 # Ignore generated csv file
-graph.csv
+*.csv

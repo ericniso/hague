@@ -90,6 +90,9 @@ hgraph*
 hgraph_create_de_bruijn_graph(kseq_t*, uint64_t);
 
 void
-export_graph_to_csv(hgraph*);
+export_graph_to_csv(hgraph*, char*);
+
+void
+print_graph(hgraph*);
 
 #endif
