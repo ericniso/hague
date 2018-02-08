@@ -84,7 +84,7 @@ hgraph_add_vertex(hgraph* g, char* key)
 }
 
 hgraph_edge*
-hgraph_add_edge(hgraph* g, char* start, char* end)
+hgraph_add_edge(hgraph* g, char* start, char* end, char* csvstring)
 {
     assert_graph_init(g);
 
@@ -93,6 +93,8 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     
     hgraph_vertex* v_e = hgraph_add_vertex(g, end);
     v_e->indegree++;
+
+    sprintf(csvstring, "%s, %s, %s%c", start, end, start, end[strlen(end)-1]);
 
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
@@ -269,6 +271,8 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 {
     hgraph* g = hgraph_create();
     bool validfile = false;
+    FILE *f = fopen("graph.csv", "w");
+    fprintf(f, "Source, Target, Label\n");
     while ((kseq_read(seq)) >= 0)
     {
         validfile = true;
@@ -278,6 +282,7 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 
         for (uint64_t i = 0; i < strlen(s) - k + 1; i++)
         {
+            char* csvstring = malloc(((3 * k) + 3) * sizeof(char));
             char* kmer = malloc(k * sizeof(char) + 1);
             strncpy(kmer, &s[i], k);
             kmer[k] = '\0';
@@ -289,14 +294,16 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
             strncpy(rk, &kmer[1], (k - 1));
             rk[k - 1] = '\0';
 
-            hgraph_add_edge(g, lk, rk);
+            hgraph_add_edge(g, lk, rk, csvstring);
+
+            fprintf(f, "%s\n", csvstring);
 
             free(kmer);
             free(lk);
             free(rk);
         }
     }
-
+    fclose(f);
     assert(validfile && "Invalid file content");
 
     return g;

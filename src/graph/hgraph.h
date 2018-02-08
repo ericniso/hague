@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "utils/initializer.h"
 #include "klib/kseq.h"
 #include "hash/uthash.h"
@@ -59,7 +60,7 @@ hgraph_vertex*
 hgraph_add_vertex(hgraph*, char*);
 
 hgraph_edge*
-hgraph_add_edge(hgraph*, char*, char*);
+hgraph_add_edge(hgraph*, char*, char*, char*);
 
 void
 hgraph_destroy(hgraph*);
