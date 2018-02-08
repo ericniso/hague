@@ -84,7 +84,7 @@ hgraph_add_vertex(hgraph* g, char* key)
 }
 
 hgraph_edge*
-hgraph_add_edge(hgraph* g, char* start, char* end, char* csvstring)
+hgraph_add_edge(hgraph* g, char* start, char* end)
 {
     assert_graph_init(g);
 
@@ -93,8 +93,6 @@ hgraph_add_edge(hgraph* g, char* start, char* end, char* csvstring)
     
     hgraph_vertex* v_e = hgraph_add_vertex(g, end);
     v_e->indegree++;
-
-    sprintf(csvstring, "%s, %s, %s%c", start, end, start, end[strlen(end)-1]);
 
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
@@ -271,8 +269,6 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 {
     hgraph* g = hgraph_create();
     bool validfile = false;
-    FILE *f = fopen("graph.csv", "w");
-    fprintf(f, "Source, Target, Label\n");
     while ((kseq_read(seq)) >= 0)
     {
         validfile = true;
@@ -282,7 +278,6 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 
         for (uint64_t i = 0; i < strlen(s) - k + 1; i++)
         {
-            char* csvstring = malloc(((3 * k) + 3) * sizeof(char));
             char* kmer = malloc(k * sizeof(char) + 1);
             strncpy(kmer, &s[i], k);
             kmer[k] = '\0';
@@ -294,17 +289,34 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
             strncpy(rk, &kmer[1], (k - 1));
             rk[k - 1] = '\0';
 
-            hgraph_add_edge(g, lk, rk, csvstring);
-
-            fprintf(f, "%s\n", csvstring);
+            hgraph_add_edge(g, lk, rk);
 
             free(kmer);
             free(lk);
             free(rk);
         }
     }
-    fclose(f);
     assert(validfile && "Invalid file content");
 
     return g;
+}
+
+void
+export_graph_to_csv(hgraph* g)
+{
+    assert_graph_init(g);
+    hgraph_vertex* v = NULL;
+    hgraph_vertex* tmp = NULL;
+    FILE *f = fopen("graph.csv", "w");
+    fprintf(f, "Source, Target, Label\n");
+
+    HASH_ITER(hh, g->vertices, v, tmp) {
+        for(int i = 0; i < v->outdegree; i++)
+        {
+            char* end = v->neighbours[i]->end;
+            fprintf(f, "%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end)-1]);
+        }
+    }
+
+    fclose(f);
 }

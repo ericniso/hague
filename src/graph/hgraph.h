@@ -60,7 +60,7 @@ hgraph_vertex*
 hgraph_add_vertex(hgraph*, char*);
 
 hgraph_edge*
-hgraph_add_edge(hgraph*, char*, char*, char*);
+hgraph_add_edge(hgraph*, char*, char*);
 
 void
 hgraph_destroy(hgraph*);
@@ -88,5 +88,8 @@ hgraph_compute_eulerian_walk(hgraph*);
 
 hgraph*
 hgraph_create_de_bruijn_graph(kseq_t*, uint64_t);
+
+void
+export_graph_to_csv(hgraph*);
 
 #endif

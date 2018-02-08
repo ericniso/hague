@@ -29,6 +29,12 @@ main(uint64_t argc, char** argv)
 
     hgraph* g = hgraph_create_de_bruijn_graph(seq, ai.k_mer_length_arg);
 
+    if(ai.export_csv_given)
+    {
+        export_graph_to_csv(g);
+    }
+
+
 #ifdef DEBUG
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
 #endif
