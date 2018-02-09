@@ -43,11 +43,11 @@ main(uint64_t argc, char** argv)
     {
         if(ai.output_file_arg)
         {
-            export_graph_to_csv(g, ai.output_file_arg);
+            hgraph_export_to_csv(g, ai.output_file_arg);
         }
         else
         {
-            print_graph(g);
+            hgraph_print_graph(g);
         }
     }
     else if(ai.output_walk_given)

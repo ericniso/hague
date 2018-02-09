@@ -303,7 +303,7 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 }
 
 void
-export_graph_to_csv(hgraph* g, char* filename)
+hgraph_export_to_csv(hgraph* g, char* filename)
 {
     assert_graph_init(g);
     hgraph_vertex* v = NULL;
@@ -324,7 +324,7 @@ export_graph_to_csv(hgraph* g, char* filename)
 }
 
 void
-print_graph(hgraph* g)
+hgraph_print_graph(hgraph* g)
 {
     assert_graph_init(g);
     hgraph_vertex* v = NULL;
