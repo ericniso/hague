@@ -33,12 +33,19 @@ CMDLINE_OBJS = $(CMDLINE_OBJDIR)/cmdline.o
 
 OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(IO_OBJS)
 
+all: bin lib
+
 bin: bin/hague
+
+lib: lib/libhague.so
 
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
 
+lib/libhague.so: src/graph/hgraph.c src/graph/hgraph.h
+	mkdir -p lib
+	$(CC) -shared -o $@ $(CFLAGS) $(INCS) -fPIC $< $(LINK)
 
 $(IO_OBJDIR)/%.o: src/io/%.c src/io/%.h
 	mkdir -p $(IO_OBJDIR)
@@ -61,6 +68,6 @@ $(CMDLINE_GEN_SRCS): conf/$(P).ggo
 	gengetopt -i $< --output-dir=src/cmdline/
 
 clean:
-	rm -rf bin build src/cmdline
+	rm -rf bin lib build src/cmdline
 
-.PHONY: bin clean
+.PHONY: all bin lib clean
