@@ -97,8 +97,13 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
     hgraph_edge* e = malloc(sizeof(hgraph_edge));
+    uint64_t llength = strlen(start) + 1;
+    e->label = malloc(llength * sizeof(char) + 1);
     e->next = malloc(strlen(end) * sizeof(char) + 1);
     strcpy(e->next, end);
+    strncpy(e->label, start, strlen(start)); // Copy first (k-1)-mer chars
+    strncpy(&(e->label[llength - 1]), &(end[strlen(end) - 1]), 1); // copy last char
+    e->label[llength] = '\0';
 
     v_s->neighbours[v_s->outdegree - 1] = e;
 
@@ -123,6 +128,7 @@ hgraph_destroy(hgraph* g)
         for (uint64_t j = 0; j < v->outdegree; j++)
         {
             hgraph_edge* e = v->neighbours[j];
+            free(e->label);
             free(e->next);
             free(e);
         }
@@ -335,8 +341,8 @@ hgraph_print_graph(hgraph* g)
     {
         for(uint64_t i = 0; i < v->outdegree; i++)
         {
-            char* end = v->neighbours[i]->next;
-            printf("%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end) - 1]);
+            hgraph_edge* edge = v->neighbours[i];
+            printf("%s, %s, %s\n", v->key, edge->next, edge->label);
         }
     }
 }

@@ -41,6 +41,7 @@ struct hgraph_vertex
 
 struct hgraph_edge
 {
+    char* label; /* k-mer string */
     char* next; /* Next node key */
 };
 
