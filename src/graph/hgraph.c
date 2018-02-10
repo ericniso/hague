@@ -97,8 +97,8 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
     v_s->neighbours = realloc(v_s->neighbours, v_s->outdegree * sizeof(hgraph_edge*));
 
     hgraph_edge* e = malloc(sizeof(hgraph_edge));
-    e->end = malloc(strlen(end) * sizeof(char) + 1);
-    strcpy(e->end, end);
+    e->next = malloc(strlen(end) * sizeof(char) + 1);
+    strcpy(e->next, end);
 
     v_s->neighbours[v_s->outdegree - 1] = e;
 
@@ -123,7 +123,7 @@ hgraph_destroy(hgraph* g)
         for (uint64_t j = 0; j < v->outdegree; j++)
         {
             hgraph_edge* e = v->neighbours[j];
-            free(e->end);
+            free(e->next);
             free(e);
         }
 
@@ -246,7 +246,7 @@ hgraph_compute_eulerian_walk(hgraph* g)
         {
             hgraph_edge* e = next->neighbours[j];
             next->next_neighbour++;
-            next = hgraph_get_vertex(g, e->end);
+            next = hgraph_get_vertex(g, e->next);
         }
 
         assert(next != NULL && "Not an Eulerian path");
@@ -315,7 +315,7 @@ hgraph_export_to_csv(hgraph* g, char* filename)
     {
         for(uint64_t i = 0; i < v->outdegree; i++)
         {
-            char* end = v->neighbours[i]->end;
+            char* end = v->neighbours[i]->next;
             fprintf(f, "%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end) - 1]);
         }
     }
@@ -335,7 +335,7 @@ hgraph_print_graph(hgraph* g)
     {
         for(uint64_t i = 0; i < v->outdegree; i++)
         {
-            char* end = v->neighbours[i]->end;
+            char* end = v->neighbours[i]->next;
             printf("%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end) - 1]);
         }
     }

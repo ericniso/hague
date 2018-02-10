@@ -41,7 +41,7 @@ struct hgraph_vertex
 
 struct hgraph_edge
 {
-    char* end; /* Ending node key */
+    char* next; /* Next node key */
 };
 
 hgraph*
