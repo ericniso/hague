@@ -1,6 +1,6 @@
 package "hague"
 version "0.1.0"
-description "Implementation of the Karp-Rabin algorithm"
+description "An adjacency-list based De Bruijn graphs implementation"
 args "--unamed-opts"
 
 # Options
@@ -10,5 +10,7 @@ option  "output-graph" g "output graph to console or to file(-o)" optional
 option  "output-walk" w "output eulerian walk to console or to file(-o)" optional
 option  "output-file" o "output filename" string typestr="output-filename" optional
 details="\n
-The text file is in FASTA format.\n
+The text file is in FASTA format.
+Use option -g to output the generated graph as csv edge list, option -w to output the generated eulerian walk.
+If -o is specified the output will redirect to file.
 ---------------------------\n"
