@@ -321,8 +321,8 @@ hgraph_export_to_csv(hgraph* g, char* filename)
     {
         for(uint64_t i = 0; i < v->outdegree; i++)
         {
-            char* end = v->neighbours[i]->next;
-            fprintf(f, "%s, %s, %s%c\n", v->key, end, v->key, end[strlen(end) - 1]);
+            hgraph_edge* edge = v->neighbours[i];
+            fprintf(f, "%s, %s, %s\n", v->key, edge->next, edge->label);
         }
     }
 
