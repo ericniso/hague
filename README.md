@@ -13,7 +13,9 @@ git clone https://github.com/ericniso/hague.git && cd hague
 make
 bin/hague
 ```
-Use bin/hague --detailed-help for parameters
+Use bin/hague --detailed-help for parameters.
+
+Example FASTA Files: http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/
 
 ### License
 
