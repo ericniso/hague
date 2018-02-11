@@ -33,15 +33,21 @@ CMDLINE_OBJS = $(CMDLINE_OBJDIR)/cmdline.o
 
 OBJS =  $(CMDLINE_OBJS) $(GRAPH_OBJS) $(IO_OBJS)
 
-all: bin lib
+all: bin debug lib
 
 bin: bin/hague
+
+debug: debug/hague
 
 lib: lib/libhague.so
 
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
+
+debug/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
+	mkdir -p debug
+	$(CC) -o $@ -DDEBUG $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
 
 lib/libhague.so: src/graph/hgraph.c src/graph/hgraph.h
 	mkdir -p lib

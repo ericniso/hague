@@ -67,8 +67,6 @@ main(uint64_t argc, char** argv)
                 printf("Eulerian path\n");
 
             printf("Start: %s\nEnd: %s\n", s->key, e->key);
-
-            printf("Path result: ");
 #endif
             char* superstring = hgraph_compute_eulerian_walk(g);
             if(ai.output_file_arg)
@@ -91,10 +89,6 @@ main(uint64_t argc, char** argv)
             }
 
             free(superstring);
-
-#ifdef DEBUG
-            printf("\n");
-#endif
         }
         else
         {
