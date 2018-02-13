@@ -236,34 +236,33 @@ hgraph_compute_eulerian_walk(hgraph* g)
 
     hgraph_vertex* start = hgraph_eulerian_walk_start(g);
     hgraph_vertex* end = hgraph_eulerian_walk_end(g);
-
-    uint64_t result_length = g->e + strlen(end->key);
-    char* result = malloc(result_length * sizeof(char) + 1);
-
-    result[0] = start->key[0];
-
     hgraph_vertex* next = start;
 
-    uint64_t i;
-    for (i = 1; i < result_length - strlen(end->key); i++)
+    uint64_t kmer = strlen(start->key) + 1;
+    uint64_t result_length = g->e + kmer - 1;
+
+    char* result = malloc(result_length * sizeof(char) + 1);
+
+    for (uint64_t i = 0; i < result_length - kmer + 1; i++)
     {   
         uint64_t j = next->next_neighbour;
         if (j < next->outdegree)
         {
-            hgraph_edge* e = next->neighbours[j];
+            hgraph_edge* edge = next->neighbours[j];
             next->next_neighbour++;
-            next = hgraph_get_vertex(g, e->next);
+
+            // haven't reached the last edge yet
+            if (i < result_length - kmer)
+            {
+                next = hgraph_get_vertex(g, edge->next);
+
+                result[i] = edge->label[0];
+            }
+            else
+            {
+                strncpy(&result[i], edge->label, strlen(edge->label));
+            }
         }
-
-        assert(next != NULL && "Not an Eulerian path");
-        result[i] = next->key[0];
-    }
-
-    uint64_t j = 0;
-    for (i; i < result_length; i++)
-    {
-        result[i] = end->key[j];
-        j++;
     }
 
     result[result_length] = '\0';
