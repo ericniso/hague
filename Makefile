@@ -41,6 +41,10 @@ debug: debug/hague
 
 lib: lib/libhague.so
 
+doc: all
+	rm -rf html latex
+	doxygen ./Doxyfile
+	
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) $(INCS) src/main/hague.c $(OBJS) $(LINK)
@@ -74,6 +78,6 @@ $(CMDLINE_GEN_SRCS): conf/$(P).ggo
 	gengetopt -i $< --output-dir=src/cmdline/
 
 clean:
-	rm -rf bin lib build src/cmdline
+	rm -rf bin lib build src/cmdline html latex
 
-.PHONY: all bin lib clean
+.PHONY: all bin lib doc clean
