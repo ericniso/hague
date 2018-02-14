@@ -82,6 +82,7 @@ main(uint64_t argc, char** argv)
                 }
 
                 fprintf(f, "%s", superstring);
+                fclose(f);
             }
             else
             {
