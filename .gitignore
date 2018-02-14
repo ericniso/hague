@@ -25,3 +25,7 @@ cmake-build-debug/
 
 # Ignore generated csv file
 *.csv
+
+# Ignore documentation folders
+html/
+latex/
