@@ -17,8 +17,10 @@ assert_eulerian_properties_computed(hgraph* g)
 {
     assert_graph_init(g);
 
-    assert((g->v_balanced + g->v_semi_balanced + g->v_generic) == g->v
-        && "Eulerian properties not computed, try calling hgraph_compute__eulerian_path_properties(hgraph)");
+    uint64_t count_vertices_by_type = (g->count_balanced_vertices + g->count_semi_balanced_vertices
+                                                                  + g->count_generic_vertices);
+    assert(count_vertices_by_type == g->count_vertices &&
+                   "Eulerian properties not computed, try calling hgraph_compute__eulerian_path_properties(hgraph)");
 
 }
 
@@ -26,13 +28,13 @@ hgraph*
 hgraph_create()
 {
     hgraph* g = malloc(sizeof(hgraph));
-    g->v = 0;
-    g->e = 0;
-    g->v_semi_balanced = 0;
-    g->v_balanced = 0;
-    g->v_generic = 0;
-    g->w_start = NULL;
-    g->w_end = NULL;
+    g->count_vertices = 0;
+    g->count_edges = 0;
+    g->count_semi_balanced_vertices = 0;
+    g->count_balanced_vertices = 0;
+    g->count_generic_vertices = 0;
+    g->walk_start_vertex = NULL;
+    g->walk_end_vertex = NULL;
     g->vertices = NULL;
 
     return g;
@@ -47,7 +49,7 @@ hgraph_vertex_count(hgraph* g)
 {
     assert_graph_init(g);
 
-    return g->v;
+    return g->count_vertices;
 }
 
 /**
@@ -59,7 +61,7 @@ hgraph_edge_count(hgraph* g)
 {
     assert_graph_init(g);
 
-    return g->e;
+    return g->count_edges;
 }
 
 /**
@@ -100,7 +102,7 @@ hgraph_add_vertex(hgraph* g, char* key)
         strcpy(v->key, key);
         v->neighbours = NULL;
 
-        g->v++;
+        g->count_vertices++;
         HASH_ADD_STR(g->vertices, key, v);
     }    
 
@@ -140,7 +142,7 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
 
     v_s->neighbours[v_s->outdegree - 1] = e;
 
-    g->e++;
+    g->count_edges++;
 
     return e;
 }
@@ -189,7 +191,7 @@ hgraph_eulerian_walk_start(hgraph* g)
 {
     assert_eulerian_properties_computed(g);
 
-    return g->w_start;
+    return g->walk_start_vertex;
 }
 
 /**
@@ -201,7 +203,7 @@ hgraph_eulerian_walk_end(hgraph* g)
 {
     assert_eulerian_properties_computed(g);
 
-    return g->w_end;
+    return g->walk_end_vertex;
 }
 
 /**
@@ -228,32 +230,32 @@ hgraph_compute_eulerian_path_properties(hgraph* g)
 
         if (v->indegree == v->outdegree)
         {
-            g->v_balanced++;
+            g->count_balanced_vertices++;
         }
         else if (abs(v->indegree - v->outdegree) == 1)
         {
-            g->v_semi_balanced++;
+            g->count_semi_balanced_vertices++;
 
             if (v->indegree == v->outdegree + 1)
             {
-                g->w_end = v;
+                g->walk_end_vertex = v;
             }
 
             if (v->outdegree == v->indegree + 1)
             {
-                g->w_start = v;
+                g->walk_start_vertex = v;
             }
         }
         else
         {
-            g->v_generic++;
+            g->count_generic_vertices++;
         }
     }
 
     if (hgraph_has_eulerian_cycle(g))
     {
-        g->w_start = first;
-        g->w_end = g->w_start;
+        g->walk_start_vertex = first;
+        g->walk_end_vertex = g->walk_start_vertex;
     }
 }
 
@@ -265,8 +267,9 @@ bool
 hgraph_has_eulerian_path(hgraph* g)
 {
     assert_eulerian_properties_computed(g);
+    bool is_semi_eulerian = (g->count_semi_balanced_vertices == 2) && (g->count_generic_vertices == 0);
 
-    return g->v_generic == 0 && g->v_semi_balanced == 2;
+    return is_semi_eulerian;
 }
 
 /**
@@ -277,8 +280,8 @@ bool
 hgraph_has_eulerian_cycle(hgraph* g)
 {
     assert_eulerian_properties_computed(g);
-
-    return g->v_generic == 0 && g->v_semi_balanced == 0;
+    bool is_eulerian = (g->count_generic_vertices == 0) && (g->count_semi_balanced_vertices == 0);
+    return is_eulerian;
 }
 
 /**
@@ -308,12 +311,12 @@ hgraph_compute_eulerian_walk(hgraph* g)
     hgraph_vertex* end = hgraph_eulerian_walk_end(g);
     hgraph_vertex* next = start;
 
-    uint64_t kmer = strlen(start->key) + 1;
-    uint64_t result_length = g->e + kmer - 1;
+    uint64_t kmer_length = strlen(start->key) + 1;
+    uint64_t result_length = g->count_edges + kmer_length - 1;
 
     char* result = malloc(result_length * sizeof(char) + 1);
 
-    for (uint64_t i = 0; i < result_length - kmer + 1; i++)
+    for (uint64_t i = 0; i < result_length - kmer_length + 1; i++)
     {   
         uint64_t j = next->next_neighbour;
         if (j < next->outdegree)
@@ -322,7 +325,7 @@ hgraph_compute_eulerian_walk(hgraph* g)
             next->next_neighbour++;
 
             // haven't reached the last edge yet
-            if (i < result_length - kmer)
+            if (i < result_length - kmer_length)
             {
                 next = hgraph_get_vertex(g, edge->next);
 

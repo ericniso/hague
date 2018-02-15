@@ -25,13 +25,13 @@ typedef struct hgraph_edge hgraph_edge;
 */
 struct hgraph
 {
-    uint64_t v; /**<  Number of vertices */
-    uint64_t e; /**<  Number of edges */
-    uint64_t v_balanced; /**< Number of balanced vertices */
-    uint64_t v_semi_balanced; /**< Number of semi-balanced vertices */
-    uint64_t v_generic; /**< Number of vertices with different in/out edges */
-    hgraph_vertex* w_start; /**< Starting vertex of Eulerian path (if exists) */
-    hgraph_vertex* w_end; /**< Ending vertex of Eulerian path (if exists) */
+    uint64_t count_vertices; /**<  Number of vertices */
+    uint64_t count_edges; /**<  Number of edges */
+    uint64_t count_balanced_vertices; /**< Number of balanced vertices */
+    uint64_t count_semi_balanced_vertices; /**< Number of semi-balanced vertices */
+    uint64_t count_generic_vertices; /**< Number of vertices with different in/out edges */
+    hgraph_vertex* walk_start_vertex; /**< Starting vertex of Eulerian path (if exists) */
+    hgraph_vertex* walk_end_vertex; /**< Ending vertex of Eulerian path (if exists) */
     hgraph_vertex* vertices; /**< Map of vertices */
 };
 
