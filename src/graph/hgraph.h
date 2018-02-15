@@ -101,84 +101,84 @@ hgraph_add_vertex(hgraph*, char*);
 
 /**
  *
- * @brief
+ * @brief Create an edge in an hague graph
  */
 hgraph_edge*
 hgraph_add_edge(hgraph*, char*, char*);
 
 /**
  *
- * @brief
+ * @brief Destroy graph g
  */
 void
 hgraph_destroy(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Return the first vertex of the eulerian walk of an hague graph(if exists)
  */
 hgraph_vertex*
 hgraph_eulerian_walk_start(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Return the last vertex of the eulerian walk of an hague graph(if exists)
  */
 hgraph_vertex*
 hgraph_eulerian_walk_end(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Compute the properties of the eulerian walk for an hague graph
  */
 void
 hgraph_compute_eulerian_path_properties(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Return true if and only if an hague graph has eulerian path
  */
 bool
 hgraph_has_eulerian_path(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Return true if and only if an hague graph has eulerian cycle
  */
 bool
 hgraph_has_eulerian_cycle(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Return true if and only if eulerian properties have already been computed on an hague graph
  */
 bool
 hgraph_has_eulerian_properties(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Compute the eulerian walk on an hague graph
  */
 char*
 hgraph_compute_eulerian_walk(hgraph*);
 
 /**
  *
- * @brief
+ * @brief Create De Bruijn graph from a FASTA sequence
  */
 hgraph*
 hgraph_create_de_bruijn_graph(kseq_t*, uint64_t);
 
 /**
  *
- * @brief
+ * @brief Save graph to file using Gephi "Edges table" notation
  */
 void
 hgraph_export_to_file(hgraph*, char*);
 
 /**
  *
- * @brief
+ * @brief Print graph to console using Gephi "Edges table" notation
  */
 void
 hgraph_print_graph(hgraph*);

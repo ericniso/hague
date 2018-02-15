@@ -108,7 +108,13 @@ hgraph_add_vertex(hgraph* g, char* key)
 }
 
 /**
- *  Create edge from start to end in graph g
+ * @param g An initialized hague graph
+ * @param start Label of starting node
+ * @param end Label of ending node
+ * @return The created hague edge
+ *
+ * The label of the edge is obtained concatenating the label of the starting node and the last
+ * character of the label of the ending node
  */
 hgraph_edge*
 hgraph_add_edge(hgraph* g, char* start, char* end)
@@ -140,7 +146,9 @@ hgraph_add_edge(hgraph* g, char* start, char* end)
 }
 
 /**
- * Destroy graph g
+ * @param g An initialized hague graph
+ *
+ * Remove the graph from memory
  */
 void
 hgraph_destroy(hgraph* g)
@@ -173,7 +181,8 @@ hgraph_destroy(hgraph* g)
 }
 
 /**
- *  Return the first vertex of the eulerian walk
+ * @param g An initialized hague graph
+ * @return The eulerian walk starting vertex if exists, NULL otherwise
  */
 hgraph_vertex*
 hgraph_eulerian_walk_start(hgraph* g)
@@ -184,7 +193,8 @@ hgraph_eulerian_walk_start(hgraph* g)
 }
 
 /**
- *  Return the last vertex of the eulerian walk
+ * @param g An initialized hague graph
+ * @return The eulerian walk ending vertex if exists, NULL otherwise
  */
 hgraph_vertex*
 hgraph_eulerian_walk_end(hgraph* g)
@@ -195,7 +205,10 @@ hgraph_eulerian_walk_end(hgraph* g)
 }
 
 /**
- *  Compute the properties of the eulerian walk for graph g
+ * @param g An initialized hague graph
+ *
+ * Set the starting and ending node of the eulerian walk(if exists) and detect if the graph is eulerian, semi-eularian
+ * or a generic graph
  */
 void
 hgraph_compute_eulerian_path_properties(hgraph* g)
@@ -245,7 +258,8 @@ hgraph_compute_eulerian_path_properties(hgraph* g)
 }
 
 /**
- *  Return true if and only if graph g has eulerian path
+ * @param g An initialized hague graph
+ * @return True, if g has eulerian path, false otherwise
  */
 bool
 hgraph_has_eulerian_path(hgraph* g)
@@ -256,7 +270,8 @@ hgraph_has_eulerian_path(hgraph* g)
 }
 
 /**
- *  Return true if and only if graph g has eulerian cycle
+ * @param g An initialized hague graph
+ * @return True, if g has eulerian cycle, false otherwise
  */
 bool
 hgraph_has_eulerian_cycle(hgraph* g)
@@ -267,7 +282,8 @@ hgraph_has_eulerian_cycle(hgraph* g)
 }
 
 /**
- *  Return true if and only if eulerian properties have been computed on graph g
+ * @param g An initialized hague graph
+ * @return True, if eulerian properties have already been computed on g, false otherwise
  */
 bool
 hgraph_has_eulerian_properties(hgraph* g)
@@ -278,7 +294,10 @@ hgraph_has_eulerian_properties(hgraph* g)
 }
 
 /**
- *  Compute the eulerian walk on graph g
+ * @param g An initialized hague graph
+ * @return A string containing the concatenation of edge labels, from eulerian walk starting node to ending node
+ *
+ * Eulerian properties must have been already computed on g
  */
 char*
 hgraph_compute_eulerian_walk(hgraph* g)
@@ -322,7 +341,9 @@ hgraph_compute_eulerian_walk(hgraph* g)
 }
 
 /**
- *  Create De Bruijn graph from a FASTA sequence using substring of the sequence of length k(k-mer)
+ * @param seq A FASTA sequence parsed using kseq library
+ * @param k The length of the k-mer
+ * @return An empty hague graph if seq is not valid or an hague graph representing a De Bruijn graph otherwise
  */
 hgraph*
 hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
@@ -362,7 +383,8 @@ hgraph_create_de_bruijn_graph(kseq_t* seq, uint64_t k)
 }
 
 /**
- *  Save graph to file using Gephi "Edges table" notation
+ * @param g An initialized hague graph
+ * @param filename Name of the outpur file
  */
 void
 hgraph_export_to_file(hgraph* g, char* filename)
@@ -386,7 +408,7 @@ hgraph_export_to_file(hgraph* g, char* filename)
 }
 
 /**
- *  Print graph to console using Gephi "Edges table" notation
+ * @param g An initialized hague graph
  */
 void
 hgraph_print_graph(hgraph* g)
