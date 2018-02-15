@@ -37,7 +37,8 @@ main(uint64_t argc, char** argv)
     {
         result_code = EXIT_FAILURE;
         
-        printf("%s: only one option between '--output-graph' ('-g') and '--output-walk' ('-w') can be executed\n", argv[0]);
+        printf("%s: only one option between '--output-graph' ('-g') and '--output-walk' ('-w') can be executed\n",
+               argv[0]);
     }
     else if(ai.output_graph_given)
     {
