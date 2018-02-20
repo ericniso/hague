@@ -40,13 +40,12 @@ bin: bin/hague
 debug: debug/hague
 
 test: bin
-	chmod +x run-tests
-	./run-tests
+	@chmod +x run-tests
+	@./run-tests
 
 lib: lib/libhague.so
 
 doc: all
-	rm -rf html latex
 	doxygen Doxyfile
 	
 bin/hague: src/main/hague.c $(CMDLINE_GEN_SRCS) $(OBJS)
