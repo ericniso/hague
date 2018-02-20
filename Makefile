@@ -39,6 +39,10 @@ bin: bin/hague
 
 debug: debug/hague
 
+test: bin
+	chmod +x run-tests
+	./run-tests
+
 lib: lib/libhague.so
 
 doc: all
@@ -80,4 +84,4 @@ $(CMDLINE_GEN_SRCS): conf/$(P).ggo
 clean:
 	rm -rf bin lib build src/cmdline docs
 
-.PHONY: all bin lib doc clean
+.PHONY: all bin lib test doc clean
