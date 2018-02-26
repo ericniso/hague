@@ -1,0 +1,29 @@
+#!/bin/bash
+
+tests_folder="tests"
+time_cmd="/usr/bin/time"
+hague="../bin/hague"
+http_file="http://hgdownload.cse.ucsc.edu/goldenPath/hg38/chromosomes/chr1_KI270707v1_random.fa.gz"
+input_file="test.fa.gz"
+k_mer="200"
+hague_args="-f ${input_file} -k ${k_mer}"
+
+rm -rf $tests_folder
+mkdir -p $tests_folder
+cd $tests_folder
+
+printf "Downloading test files..."
+
+wget -q -O $input_file $http_file
+
+printf "done.\n"
+
+printf "\nRunning tests...\n\n"
+
+$time_cmd -f "\tDe Bruijn graph creation:\t%E real,\t%U user,\t%S sys" $hague $hague_args -g > /dev/null
+$time_cmd -f "\tEulerian path reconstruction:\t%E real,\t%U user,\t%S sys" $hague $hague_args -w > /dev/null
+
+printf "\n"
+
+cd ..
+rm -rf $tests_folder
