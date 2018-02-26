@@ -6,7 +6,6 @@ args "--unamed-opts"
 # Options
 option  "filename" f "FASTA file" string typestr="filename"
 option  "k-mer-length" k "k-mer length" int  typestr="k-mer"
-option  "output-graph" g "output graph to console or to file(-o)" optional
 option  "output-walk" w "output eulerian walk to console or to file(-o)" optional
 option  "output-file" o "output filename" string typestr="output-filename" optional
 details="\n

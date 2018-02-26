@@ -20,7 +20,7 @@ printf "done.\n"
 
 printf "\nRunning tests...\n\n"
 
-$time_cmd -f "\tDe Bruijn graph creation:\t%E real,\t%U user,\t%S sys" $hague $hague_args -g > /dev/null
+$time_cmd -f "\tDe Bruijn graph creation:\t%E real,\t%U user,\t%S sys" $hague $hague_args > /dev/null
 $time_cmd -f "\tEulerian path reconstruction:\t%E real,\t%U user,\t%S sys" $hague $hague_args -w > /dev/null
 
 printf "\n"

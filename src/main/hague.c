@@ -33,14 +33,7 @@ main(uint64_t argc, char** argv)
     printf("Vertices: %d\nEdges: %d\n", hgraph_vertex_count(g), hgraph_edge_count(g));
 #endif
 
-    if (ai.output_graph_given && ai.output_walk_given)
-    {
-        result_code = EXIT_FAILURE;
-        
-        printf("%s: only one option between '--output-graph' ('-g') and '--output-walk' ('-w') can be executed\n",
-               argv[0]);
-    }
-    else if(ai.output_graph_given)
+    if(!ai.output_walk_given)
     {
         if(ai.output_file_arg)
         {
@@ -51,7 +44,7 @@ main(uint64_t argc, char** argv)
             hgraph_print_graph(g);
         }
     }
-    else if(ai.output_walk_given)
+    else
     {
         hgraph_compute_eulerian_path_properties(g);
 
@@ -72,15 +65,7 @@ main(uint64_t argc, char** argv)
             char* superstring = hgraph_compute_eulerian_walk(g);
             if(ai.output_file_arg)
             {
-                FILE *f = NULL;
-                if(ai.output_graph_given)
-                {
-                    f = fopen(ai.output_file_arg, "a");
-                }
-                else
-                {
-                    f = fopen(ai.output_file_arg, "w");
-                }
+                FILE *f = fopen(ai.output_file_arg, "w");
 
                 fprintf(f, "%s", superstring);
                 fclose(f);
@@ -100,13 +85,6 @@ main(uint64_t argc, char** argv)
             result_code = EXIT_FAILURE;
         }
     }
-    else
-    {
-        result_code = EXIT_FAILURE;
-
-        printf("%s: '--output-graph' ('-g') or '--output-walk' ('-w') options required\n", argv[0]);
-    }
-
 
     hgraph_destroy(g);
     kseq_destroy(seq);
