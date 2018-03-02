@@ -86,16 +86,13 @@ Input file can be compressed `.gz` or not
 Such command will generate the `de Bruijn` graph and output the result in `csv` format, here is an example output:
 
 ```
-$ hague -f /home/nicolaas/abracadabra.fa.gz -k 5
+$ hague -f ~/Scaricati/chr1_KI270707v1_random.fa.gz -k 10 | head -n 5
 
 Source, Target, Label
-abra, brac, abrac
-brac, raca, braca
-raca, acad, racad
-acad, cada, acada
-cada, adab, cadab
-adab, dabr, adabr
-dabr, abra, dabra
+AGGGGTCTG, GGGGTCTGC, AGGGGTCTGC
+GGGGTCTGC, GGGTCTGCT, GGGGTCTGCT
+GGGTCTGCT, GGTCTGCTT, GGGTCTGCTT
+GGTCTGCTT, GTCTGCTTA, GGTCTGCTTA
 ```
 
 From left to right we can see:
