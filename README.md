@@ -86,7 +86,7 @@ Input file can be compressed `.gz` or not
 Such command will generate the `de Bruijn` graph and output the result in `csv` format, here is an example output:
 
 ```
-$ hague -f ~/Scaricati/chr1_KI270707v1_random.fa.gz -k 10 | head -n 5
+$ hague -f ~/home/nicolaas/chr1_KI270707v1_random.fa.gz -k 10 | head -n 5
 
 Source, Target, Label
 AGGGGTCTG, GGGGTCTGC, AGGGGTCTGC
